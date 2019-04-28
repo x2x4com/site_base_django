@@ -1,0 +1,8 @@
+gunicorn
+meinheld
+requests
+pyyaml
+django
+whitenoise
+django-material
+
