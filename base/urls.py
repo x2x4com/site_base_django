@@ -24,5 +24,6 @@ from django.conf import settings
 urlpatterns = [
     path('', index_view),
     path('admin/', admin.site.urls),
+    path('i18n/', include('django.conf.urls.i18n')),
     path('', include(frontend_urls)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
