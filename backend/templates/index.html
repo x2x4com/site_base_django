@@ -1,0 +1,36 @@
+<script src="https://cdn.bootcss.com/moment.js/2.24.0/moment.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ant-design-vue@1.3.8/dist/antd.css">
+<script src="https://cdn.jsdelivr.net/npm/ant-design-vue@1.3.8/dist/antd.js"></script>
+
+
+<div id="app">
+  {{ message }}
+  <a-button type="primary">Primary</a-button>
+    <a-dropdown-button @click="handleMenuClick">
+    Dropdown
+    <a-menu slot="overlay" @click="handleMenuClick">
+      <a-menu-item key="1"><a-icon type="user" />1st menu item</a-menu-item>
+      <a-menu-item key="2"><a-icon type="user" />2nd menu item</a-menu-item>
+      <a-menu-item key="3"><a-icon type="user" />3rd item</a-menu-item>
+    </a-menu>
+  </a-dropdown-button>
+</div>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+          message: 'Hello Vue!'
+        },
+        methods: {
+          handleButtonClick(e) {
+            console.log('click left button', e);
+          },
+          handleMenuClick(e) {
+            console.log('click', e);
+          },
+        }
+    })
+
+</script>
