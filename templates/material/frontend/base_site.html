@@ -1,5 +1,25 @@
 {% extends 'material/frontend/base.html' %}
-{% load i18n %}
+{% load i18n static %}
 
-{% block title %}{% trans "Django Material" %}{% endblock %}
-{% block page_title %}{% trans "Django Material" %}{% endblock %}
+{% block title %}{% trans "x2x4 Site" %}{% endblock %}
+{% block page_title %}{% trans "x2x4 Site" %}{% endblock %}
+
+
+{% block topbar_links %}
+
+<li>
+  <a class="dropdown-button" href="#!" data-activates="user-menu">
+       <i class="material-icons right">arrow_drop_down</i>MENU
+  </a>
+</li>
+<ul id="user-menu" class="dropdown-content"  style="min-width:200px">
+    <li><a href="#">Item 1</a></li>
+    <li><a href="#">Item 2</a></li>
+</ul>
+{{ block.super }}
+{% endblock %}
+
+
+{% block js %}
+    {{ block.super }}
+{% endblock %}
