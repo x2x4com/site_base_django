@@ -3,6 +3,13 @@ meinheld
 requests
 pyyaml
 django
+djangorestframework
+django-filter
+markdown
 whitenoise
 django-material
-
+celery
+django-celery-beat
+django-celery-email
+drf_yasg
+swagger_spec_validator

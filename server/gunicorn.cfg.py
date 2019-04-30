@@ -8,7 +8,7 @@ preload_app = True
  
 # 开启进程
 # workers = 4
-workers = multiprocessing.cpu_count() * 2 + 1
+workers = multiprocessing.cpu_count() * 2
  
 # 每个进程的开启线程
 # threads = multiprocessing.cpu_count() * 2
