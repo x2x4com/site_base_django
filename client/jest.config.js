@@ -1,8 +1,23 @@
 module.exports = {
-  testURL: 'http://localhost:8000',
-  preset: 'jest-puppeteer',
-  extraSetupFiles: ['./tests/setupTests.js'],
-  globals: {
-    ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION: false, // preview.pro.ant.design only do not use in your production ; preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
+  moduleFileExtensions: [
+    'js',
+    'jsx',
+    'json',
+    'vue'
+  ],
+  transform: {
+    '^.+\\.vue$': 'vue-jest',
+    '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
+    '^.+\\.jsx?$': 'babel-jest'
   },
-};
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1'
+  },
+  snapshotSerializers: [
+    'jest-serializer-vue'
+  ],
+  testMatch: [
+    '**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)'
+  ],
+  testURL: 'http://localhost/'
+}

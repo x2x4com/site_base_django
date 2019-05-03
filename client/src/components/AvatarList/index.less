@@ -1,50 +1,60 @@
-@import '~antd/lib/style/themes/default.less';
+@import "../index";
 
-.avatarList {
+@avatar-list-prefix-cls: ~"@{ant-pro-prefix}-avatar-list";
+@avatar-list-item-prefix-cls: ~"@{ant-pro-prefix}-avatar-list-item";
+
+.@{avatar-list-prefix-cls} {
   display: inline-block;
+
   ul {
+    list-style: none;
     display: inline-block;
-    margin-left: 8px;
+    padding: 0;
+    margin: 0 0 0 8px;
     font-size: 0;
   }
 }
 
-.avatarItem {
+.@{avatar-list-item-prefix-cls} {
   display: inline-block;
+  font-size: @font-size-base;
+  margin-left: -8px;
   width: @avatar-size-base;
   height: @avatar-size-base;
-  margin-left: -8px;
-  font-size: @font-size-base;
+
   :global {
     .ant-avatar {
       border: 1px solid #fff;
+      cursor: pointer;
     }
   }
-}
 
-.avatarItemLarge {
-  width: @avatar-size-lg;
-  height: @avatar-size-lg;
-}
+  &.large {
+    width: @avatar-size-lg;
+    height: @avatar-size-lg;
+  }
 
-.avatarItemSmall {
-  width: @avatar-size-sm;
-  height: @avatar-size-sm;
-}
+  &.small {
+    width: @avatar-size-sm;
+    height: @avatar-size-sm;
+  }
 
-.avatarItemMini {
-  width: 20px;
-  height: 20px;
-  :global {
-    .ant-avatar {
-      width: 20px;
-      height: 20px;
-      line-height: 20px;
+  &.mini {
+    width: 20px;
+    height: 20px;
 
-      .ant-avatar-string {
-        font-size: 12px;
-        line-height: 18px;
+    :global {
+      .ant-avatar {
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+
+        .ant-avatar-string {
+          font-size: 12px;
+          line-height: 18px;
+        }
       }
     }
   }
 }
+

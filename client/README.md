@@ -1,136 +1,156 @@
-English | [简体中文](./README.zh-CN.md) | [Русский](./README.ru-RU.md)  | [Türkçe](./README.tr-TR.md)  | [日本語](./README.ja-JP.md)
+English | [简体中文](./README.zh-CN.md)
 
-<h1 align="center">Ant Design Pro</h1>
+<h1 align="center">Ant Design Pro Vue</h1>
+
+<div align="center">
+An out-of-box UI solution for enterprise applications as a Vue boilerplate. based on  <a href="https://vuecomponent.github.io/ant-design-vue/docs/vue/introduce-cn/" target="_blank">Ant Design of Vue</a>
+</div>
 
 <div align="center">
 
-An out-of-box UI solution for enterprise applications as a React boilerplate.
-
-[![Build With Umi](https://img.shields.io/badge/build%20with-umi-028fe4.svg?style=flat-square)](http://umijs.org/)
-[![Build Status](https://dev.azure.com/ant-design/ant-design-pro/_apis/build/status/ant-design.ant-design-pro?branchName=master)](https://dev.azure.com/ant-design/ant-design-pro/_build/latest?definitionId=1?branchName=master)
-[![Dependencies](https://img.shields.io/david/ant-design/ant-design-pro.svg)](https://david-dm.org/ant-design/ant-design-pro)
-[![DevDependencies](https://img.shields.io/david/dev/ant-design/ant-design-pro.svg)](https://david-dm.org/ant-design/ant-design-pro?type=dev)
-[![Gitter](https://img.shields.io/gitter/room/ant-design/pro-english.svg?style=flat-square&logoWidth=20&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgd2lkdGg9IjEyMzUiIGhlaWdodD0iNjUwIiB2aWV3Qm94PSIwIDAgNzQxMCAzOTAwIj4NCjxyZWN0IHdpZHRoPSI3NDEwIiBoZWlnaHQ9IjM5MDAiIGZpbGw9IiNiMjIyMzQiLz4NCjxwYXRoIGQ9Ik0wLDQ1MEg3NDEwbTAsNjAwSDBtMCw2MDBINzQxMG0wLDYwMEgwbTAsNjAwSDc0MTBtMCw2MDBIMCIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjMwMCIvPg0KPHJlY3Qgd2lkdGg9IjI5NjQiIGhlaWdodD0iMjEwMCIgZmlsbD0iIzNjM2I2ZSIvPg0KPGcgZmlsbD0iI2ZmZiI%2BDQo8ZyBpZD0iczE4Ij4NCjxnIGlkPSJzOSI%2BDQo8ZyBpZD0iczUiPg0KPGcgaWQ9InM0Ij4NCjxwYXRoIGlkPSJzIiBkPSJNMjQ3LDkwIDMxNy41MzQyMzAsMzA3LjA4MjAzOSAxMzIuODczMjE4LDE3Mi45MTc5NjFIMzYxLjEyNjc4MkwxNzYuNDY1NzcwLDMwNy4wODIwMzl6Ii8%2BDQo8dXNlIHhsaW5rOmhyZWY9IiNzIiB5PSI0MjAiLz4NCjx1c2UgeGxpbms6aHJlZj0iI3MiIHk9Ijg0MCIvPg0KPHVzZSB4bGluazpocmVmPSIjcyIgeT0iMTI2MCIvPg0KPC9nPg0KPHVzZSB4bGluazpocmVmPSIjcyIgeT0iMTY4MCIvPg0KPC9nPg0KPHVzZSB4bGluazpocmVmPSIjczQiIHg9IjI0NyIgeT0iMjEwIi8%2BDQo8L2c%2BDQo8dXNlIHhsaW5rOmhyZWY9IiNzOSIgeD0iNDk0Ii8%2BDQo8L2c%2BDQo8dXNlIHhsaW5rOmhyZWY9IiNzMTgiIHg9Ijk4OCIvPg0KPHVzZSB4bGluazpocmVmPSIjczkiIHg9IjE5NzYiLz4NCjx1c2UgeGxpbms6aHJlZj0iI3M1IiB4PSIyNDcwIi8%2BDQo8L2c%2BDQo8L3N2Zz4%3D)](https://gitter.im/ant-design/pro-english?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-[![Join the chat at https://gitter.im/ant-design/ant-design-pro](https://img.shields.io/gitter/room/ant-design/ant-design-pro.svg?style=flat-square&logoWidth=20&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgd2lkdGg9IjkwMCIgaGVpZ2h0PSI2MDAiIHZpZXdCb3g9IjAgMCAzMCAyMCI%2BDQo8ZGVmcz4NCjxwYXRoIGlkPSJzIiBkPSJNMCwtMSAwLjU4Nzc4NSwwLjgwOTAxNyAtMC45NTEwNTcsLTAuMzA5MDE3SDAuOTUxMDU3TC0wLjU4Nzc4NSwwLjgwOTAxN3oiIGZpbGw9IiNmZmRlMDAiLz4NCjwvZGVmcz4NCjxyZWN0IHdpZHRoPSIzMCIgaGVpZ2h0PSIyMCIgZmlsbD0iI2RlMjkxMCIvPg0KPHVzZSB4bGluazpocmVmPSIjcyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNSw1KSBzY2FsZSgzKSIvPg0KPHVzZSB4bGluazpocmVmPSIjcyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTAsMikgcm90YXRlKDIzLjAzNjI0MykiLz4NCjx1c2UgeGxpbms6aHJlZj0iI3MiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyLDQpIHJvdGF0ZSg0NS44Njk4OTgpIi8%2BDQo8dXNlIHhsaW5rOmhyZWY9IiNzIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMiw3KSByb3RhdGUoNjkuOTQ1Mzk2KSIvPg0KPHVzZSB4bGluazpocmVmPSIjcyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTAsOSkgcm90YXRlKDIwLjY1OTgwOCkiLz4NCjwvc3ZnPg%3D%3D)](https://gitter.im/ant-design/ant-design-pro?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/b68e9850-a529-4364-9d3b-d70aade560f9/deploy-status)](https://app.netlify.com/sites/ant-design-pro/deploys)
-![](https://user-images.githubusercontent.com/8186664/44953195-581e3d80-aec4-11e8-8dcb-54b9db38ec11.png)
+[![Backers on Open Collective](https://opencollective.com/ant-design-pro-vue/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/ant-design-pro-vue/sponsors/badge.svg)](#sponsors) [![License](https://img.shields.io/npm/l/package.json.svg?style=flat)](https://github.com/sendya/ant-design-pro-vue/blob/master/LICENSE)
+[![Release](https://img.shields.io/github/release/sendya/ant-design-pro-vue.svg?style=flat)](https://github.com/sendya/ant-design-pro-vue/releases/latest)
+[![Travis branch](https://travis-ci.org/sendya/ant-design-pro-vue.svg?branch=master)](https://travis-ci.org/sendya/ant-design-pro-vue)
 
 </div>
 
-- Preview: http://preview.pro.ant.design
-- Home Page: http://pro.ant.design
-- Documentation: http://pro.ant.design/docs/getting-started
-- ChangeLog: http://pro.ant.design/docs/changelog
-- FAQ: http://pro.ant.design/docs/faq
-- Mirror Site in China: http://ant-design-pro.gitee.io
+- Preview: https://preview.pro.loacg.com
+- Home Page: https://pro.loacg.com
+- Documentation: https://pro.loacg.com/docs/getting-started
+- ChangeLog: https://pro.loacg.com/docs/changelog
+- FAQ: https://pro.loacg.com/docs/faq
+- Branches: 
+  - demo/router-view-table: CRUD view in router
+  - feature/demand_load: loaded on demand
+  - feature/lang: i18n support
+  - feature/dynamic-menu: dynamic menu demo
+  - lite: lite template (legacy)
 
-## 2.0 Released Now! 🎉🎉🎉
-[Announcing Ant Design Pro 2.0.0](https://medium.com/ant-design/beautiful-and-powerful-ant-design-pro-2-0-release-51358da5af95)
 
-## Translation Recruitment :loudspeaker:
+Overview
+----
 
-We need your help: https://github.com/ant-design/ant-design-pro/issues/120
+![dashboard + multi-tabs](https://static-2.loacg.com/open/static/github/20190224163345.jpg)
 
-## Features
+![dashboard + setting](https://static-2.loacg.com/open/static/github/20181126112124.png)
 
-- :gem: **Neat Design**: Follow [Ant Design specification](http://ant.design/)
-- :triangular_ruler: **Common Templates**: Typical templates for enterprise applications
-- :rocket: **State of The Art Development**: Newest development stack of React/umi/dva/antd
-- :iphone: **Responsive**: Designed for variable screen sizes
-- :art: **Theming**: Customizable theme with simple config
-- :globe_with_meridians: **International**: Built-in i18n solution
-- :gear: **Best Practices**: Solid workflow to make your code healthy
-- :1234: **Mock development**: Easy to use mock development solution
-- :white_check_mark: **UI Test**: Fly safely with unit and e2e tests
+![user profile](https://static-2.loacg.com/open/static/github/20180916-134251.png)
 
-## Templates
+![permission list](https://static-2.loacg.com/open/static/github/20180916-154937.png)
 
-```
-- Dashboard
-  - Analytic
-  - Monitor
-  - Workspace
-- Form
-  - Basic Form
-  - Step Form
-  - Advanced From
-- List
-  - Standard Table
-  - Standard List
-  - Card List
-  - Search List (Project/Applications/Article)
-- Profile
-  - Simple Profile
-  - Advanced Profile
-- Account
-  - Account Center
-  - Account Settings
-- Result
-  - Success
-  - Failed
-- Exception
-  - 403
-  - 404
-  - 500
-- User
-  - Login
-  - Register
-  - Register Result
-```
 
-## Usage
+### Env and dependencies
 
-### Use bash
+- node
+- yarn
+- webpack
+- eslint
+- @vue/cli ~3
+- [ant-design-vue](https://github.com/vueComponent/ant-design-vue) - Ant Design Of Vue 
+- [vue-cropper](https://github.com/xyxiao001/vue-cropper) - Picture edit
+- [@antv/g2](https://antv.alipay.com/zh-cn/index.html) - AntV G2
+- [Viser-vue](https://viserjs.github.io/docs.html#/viser/guide/installation)  - Antv/G2 of Vue
 
+> Note:  [Yarn](https://yarnpkg.com/) package management is recommended, the exact same version loaded with the demo site of this project (yarn.lock) . but you can also use npm
+
+
+### Project setup
+
+- Clone repo
 ```bash
-$ git clone https://github.com/ant-design/ant-design-pro.git --depth=1
-$ cd ant-design-pro
-$ npm install
-$ npm start         # visit http://localhost:8000
+git clone https://github.com/sendya/ant-design-pro-vue.git
+cd ant-design-pro-vue
 ```
 
-### Use by docker
-
-```bash
-# preview
-$ docker pull antdesign/ant-design-pro
-$ docker run -p 80:80 antdesign/ant-design-pro
-# open http://localhost
-
-# dev
-$ npm run docker:dev
-
-# build
-$ npm run docker:build
-
-
-# production dev
-$ npm run docker-prod:dev
-
-# production build
-$ npm run docker-prod:build
+- Install dependencies
+```
+yarn install
 ```
 
-### Use Gitpod
+- Compiles and hot-reloads for development
+```
+yarn run serve
+```
 
-Open the project in Gitpod (free online dev environment for GitHub) and start coding immediately.
+- Compiles and minifies for production
+```
+yarn run build
+```
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ant-design/ant-design-pro)
+- Lints and fixes files
+```
+yarn run lint
+```
 
-More instructions at [documentation](http://pro.ant.design/docs/getting-started).
 
-## Browsers support
+### Other
 
-Modern browsers and IE11.
+- **IMPORTANT : About Issue feedback !! when opening Issue read [Issue / PR Contributing](https://github.com/sendya/ant-design-pro-vue/issues/90)**
 
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Opera |
-| --------- | --------- | --------- | --------- | --------- |
-| IE11, Edge| last 2 versions| last 2 versions| last 2 versions| last 2 versions
+- [Vue-cli3](https://cli.vuejs.org/guide/) used by the project.
+- Disable Eslint (not recommended): remove `eslintConfig`  field in `package.json`  and `vue.config.js` field `lintOnSave: false`
 
-## Contributing
+- Load on Demand: modify `/src/main.js` L7,  append `import './core/lazy_use'` code.
 
-Any type of contribution is welcome, here are some examples of how you may contribute to this project:
+- Customize Theme:  `vue.config.js` 
+eg: 
+```ecmascript 6
+  css: {
+    loaderOptions: {
+      less: {
+        modifyVars: {
+          /* Less variables, required modifyVars*/
 
-- Use Ant Design Pro in your daily work.
-- Submit [issues](http://github.com/ant-design/ant-design-pro/issues) to report bugs or ask questions.
-- Propose [pull requests](http://github.com/ant-design/ant-design-pro/pulls) to improve our code.
+          'primary-color': '#F5222D',
+          'link-color': '#F5222D',
+          'border-radius-base': '4px',
+        },
+        javascriptEnabled: true,
+      }
+    }
+  }
+```
+- **polyfill**
+
+- remove polyfill: 
+  > [Vue CLI Polyfill](https://cli.vuejs.org/zh/guide/browser-compatibility.html#usebuiltins-usage)
+  
+  - remove `import '@babel/polyfill'`  field in  `src/main.js`
+  - `babel.conflg.js` remove
+    ```ecmascript 6
+    [
+      '@babel/preset-env',
+      {
+        'useBuiltIns': 'entry'
+      }
+    ]
+    ```
+
+## Contributors
+
+This project exists thanks to all the people who contribute. 
+<a href="https://github.com/sendya/ant-design-pro-vue/graphs/contributors"><img src="https://opencollective.com/ant-design-pro-vue/contributors.svg?width=890&button=false" /></a>
+
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/ant-design-pro-vue#backer)]
+
+<a href="https://opencollective.com/ant-design-pro-vue#backers" target="_blank"><img src="https://opencollective.com/ant-design-pro-vue/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/ant-design-pro-vue#sponsor)]
+
+<a href="https://opencollective.com/ant-design-pro-vue/sponsor/0/website" target="_blank"><img src="https://opencollective.com/ant-design-pro-vue/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/ant-design-pro-vue/sponsor/1/website" target="_blank"><img src="https://opencollective.com/ant-design-pro-vue/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/ant-design-pro-vue/sponsor/2/website" target="_blank"><img src="https://opencollective.com/ant-design-pro-vue/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/ant-design-pro-vue/sponsor/3/website" target="_blank"><img src="https://opencollective.com/ant-design-pro-vue/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/ant-design-pro-vue/sponsor/4/website" target="_blank"><img src="https://opencollective.com/ant-design-pro-vue/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/ant-design-pro-vue/sponsor/5/website" target="_blank"><img src="https://opencollective.com/ant-design-pro-vue/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/ant-design-pro-vue/sponsor/6/website" target="_blank"><img src="https://opencollective.com/ant-design-pro-vue/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/ant-design-pro-vue/sponsor/7/website" target="_blank"><img src="https://opencollective.com/ant-design-pro-vue/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/ant-design-pro-vue/sponsor/8/website" target="_blank"><img src="https://opencollective.com/ant-design-pro-vue/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/ant-design-pro-vue/sponsor/9/website" target="_blank"><img src="https://opencollective.com/ant-design-pro-vue/sponsor/9/avatar.svg"></a>
+
