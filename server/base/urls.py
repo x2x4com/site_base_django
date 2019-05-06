@@ -19,13 +19,23 @@ from material.frontend import urls as frontend_urls
 from .views import index_view
 from django.conf.urls.static import static
 from django.conf import settings
+from wagtail.admin import urls as wagtailadmin_urls
+from wagtail.documents import urls as wagtaildocs_urls
+from wagtail.core import urls as wagtail_urls
 
 
 urlpatterns = [
+    path('cms/admin/', include(wagtailadmin_urls)),
+    path('cms/documents/', include(wagtaildocs_urls)),
+    path('cms/', include(wagtail_urls)),
     path('api/', include('api.urls')),
     path('site/admin/', admin.site.urls),
     path('i18n/', include('django.conf.urls.i18n')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('app/control/', include(frontend_urls)),
     path('', index_view),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

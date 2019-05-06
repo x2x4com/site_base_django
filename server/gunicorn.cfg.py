@@ -2,7 +2,7 @@
 
 import multiprocessing
  
-bind = '0.0.0.0:10080'
+bind = '0.0.0.0:8002'
  
 preload_app = True
  
