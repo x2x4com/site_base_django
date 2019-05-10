@@ -37,6 +37,12 @@ INSTALLED_APPS = [
     'cms',
 
 
+
+    # wechat app
+    # 'wechat_django',
+
+    'jet',
+
     # cms
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',

@@ -17,3 +17,5 @@ swagger_spec_validator
 guardian
 django-redis
 django-taggit
+wechat-django[cryptography]
+django-jet

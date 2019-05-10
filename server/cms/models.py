@@ -11,7 +11,8 @@ from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
 from django.http import JsonResponse
 from django.utils.translation import gettext_lazy as _
-
+from wagtail.api import APIField
+from wagtail.images.api.fields import ImageRenditionField
 
 
 class HomePage(Page):
@@ -34,6 +35,7 @@ class ContentIndexPage(Page):
         context = super().get_context(request)
         pages = self.get_children().live().order_by('-first_published_at')
         # context['sorted_pages'] = [{'id': _p.id} for _p in pages]
+        # print(pages)
         context['sorted_pages'] = pages
         return context
 
@@ -44,10 +46,25 @@ class ContentIndexPage(Page):
     #     })
 
 
+class ContentPageTag(TaggedItemBase):
+    content_object = ParentalKey(
+        'ContentPage',
+        related_name='tagged_items',
+        on_delete=models.CASCADE
+    )
+
+
 class ContentPage(Page):
     date = models.DateField(_("release date"))
     intro = models.CharField(_("intro"), max_length=250)
     body = RichTextField(blank=True)
+    feed_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
 
     search_fields = Page.search_fields + [
         index.SearchField('intro'),
@@ -58,7 +75,25 @@ class ContentPage(Page):
         FieldPanel('date'),
         FieldPanel('intro'),
         FieldPanel('body', classname="full"),
-        InlinePanel('gallery_images', label="图片"),
+        InlinePanel('related_links', label="Related links"),
+        ImageChooserPanel('feed_image'),
+    ]
+
+    promote_panels = [
+        MultiFieldPanel(Page.promote_panels, "Common page configuration"),
+        ImageChooserPanel('feed_image'),
+    ]
+
+    def get_url(self, request=None, current_site=None):
+        _url = super().get_url(request=request, current_site=current_site)
+        print(_url)
+        return _url
+
+    api_fields = [
+        APIField('date'),
+        APIField('body'),
+        APIField('gallery_images'),
+        # APIField('gallery_images_thumbnail', serializer=ImageRenditionField('fill-100x100', source='gallery_images')),
     ]
 
     # def serve(self, request, *args, **kwargs):
@@ -66,9 +101,8 @@ class ContentPage(Page):
     #         'title': self.title,
     #         'body': self.body,
     #         'date': self.date,
-    #
     #         # Resizes the image to 300px width and gets a URL to it
-    #         # 'feed_image': self.feed_image.get_rendition('width-300').url,
+    #         # 'gallery_images': self.gallery_images.get_rendition('width-300').url,
     #     })
 
 
@@ -82,4 +116,15 @@ class ContentPageGalleryImage(Orderable):
     panels = [
         ImageChooserPanel('image'),
         FieldPanel('caption'),
+    ]
+
+
+class ContentPageRelatedLink(Orderable):
+    page = ParentalKey(ContentPage, on_delete=models.CASCADE, related_name='related_links')
+    name = models.CharField(max_length=255)
+    url = models.URLField()
+
+    panels = [
+        FieldPanel('name'),
+        FieldPanel('url'),
     ]
