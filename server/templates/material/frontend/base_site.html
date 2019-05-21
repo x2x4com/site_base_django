@@ -4,22 +4,32 @@
 {% block title %}{% trans "x2x4 Site" %}{% endblock %}
 {% block page_title %}{% trans "x2x4 Site" %}{% endblock %}
 
-
-{% block topbar_links %}
-
-<li>
-  <a class="dropdown-button" href="#!" data-activates="user-menu">
-       <i class="material-icons right">arrow_drop_down</i>MENU
-  </a>
-</li>
-<ul id="user-menu" class="dropdown-content"  style="min-width:200px">
-    <li><a href="#">Item 1</a></li>
-    <li><a href="#">Item 2</a></li>
-</ul>
+{% block css %}
 {{ block.super }}
 {% endblock %}
 
 
 {% block js %}
-    {{ block.super }}
+{{ block.super }}
+
+
+
+{% endblock %}
+
+{% block topbar_links %}
+
+<li id="lang_chose_menu"><a class="dropdown-button" href="#!" data-target="lang-menu"><i class="material-icons right">arrow_drop_down</i>Lang</a></li>
+<ul id="lang-menu" class="dropdown-content"  style="min-width:200px">
+    <li><a data-turbolinks="false" href="/url1">Item 1</a></li>
+    <li><a data-turbolinks="false" href="/url2">Item 2</a></li>
+</ul>
+{{ block.super }}
+{% endblock %}
+
+
+
+{% block main %}
+{{ block.super }}
+
+<script>$('.dropdown-button').dropdown()</script>
 {% endblock %}

@@ -32,16 +32,27 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    # my apps
-    'api.apps.ApiConfig',
-    'cms',
+    # viewflow
+    # 'viewflow.frontend',
+    # 'viewflow',
 
-
+    # material
+    'material',
+    'material.frontend',
+    'material.admin',
 
     # wechat app
     # 'wechat_django',
 
-    'jet',
+    # 'jet',
+
+    # standard django apps
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
 
     # cms
     'wagtail.contrib.forms',
@@ -62,12 +73,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
 
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+
+    # my apps
+    'api.apps.ApiConfig',
+    'control.apps.ControlConfig',
+    'demo.apps.DemoConfig',
+    'cms',
 ]
 
 MIDDLEWARE = [
@@ -101,6 +112,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.i18n',
+                'material.frontend.context_processors.modules',
             ],
             # 必须添加，否则报错
             'builtins': [
