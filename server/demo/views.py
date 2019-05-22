@@ -30,7 +30,12 @@ class WidgetFormView(generic.FormView):
 
 
 class Wizard(SessionWizardView):
-    form_list = [forms.WizardForm1, forms.WizardForm2]
+    form_list = [forms.WizardForm1, forms.WizardForm2, forms.WizardForm3]
+
+    # require login
+    @classmethod
+    def as_view(cls, *args, **kwargs):
+        return login_required(super(Wizard, cls).as_view(*args, **kwargs))
 
     def done(self, form_list, **kwargs):
         return render(self.request, 'formtools/wizard/wizard_done.html', {

@@ -1,11 +1,12 @@
 {% extends 'material/frontend/base.html' %}
 {% load i18n static %}
 
-{% block title %}{% trans "x2x4 Site" %}{% endblock %}
-{% block page_title %}{% trans "x2x4 Site" %}{% endblock %}
+{% block title %}{{ current_module.verbose_name }} - {{ block.super }}{% endblock %}
+{% block page_title %}<a href="{{ current_module.index_url }}">{{ current_module.verbose_name }}</a>{% endblock %}
 
 {% block css %}
 {{ block.super }}
+
 {% endblock %}
 
 

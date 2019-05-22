@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     # material
     'material',
     'material.frontend',
-    'material.admin',
+    # 'material.admin',
 
     # wechat app
     # 'wechat_django',
@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'taggit',
     'modelcluster',
 
+    'django_filters',
     'rest_framework',
     'drf_yasg',
 
@@ -78,6 +79,7 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
     'control.apps.ControlConfig',
     'demo.apps.DemoConfig',
+    'dashboard.apps.DashboardConfig',
     'cms',
 ]
 
@@ -120,6 +122,10 @@ TEMPLATES = [
                 'material.templatetags.material_form',
             ],
             'debug': True,
+            # 自定义tags
+            'libraries': {
+                'base_debug': 'base.templatetags.base_debug',
+            },
         },
     },
 ]
@@ -237,3 +243,5 @@ REST_FRAMEWORK = {
 # SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 # SESSION_CACHE_ALIAS = "default"
 WAGTAIL_SITE_NAME = 'My Site Base'
+LOGIN_REDIRECT_URL = '/app/dashboard'
+LOGOUT_REDIRECT_URL = '/login'

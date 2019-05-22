@@ -20,6 +20,7 @@ class SomeControlViewSet(ModelViewSet):
     model = models.SomeControl
     # ordering = ['-create_time']
     list_display = ('title', 'type', 'owner', 'create_time', )
+    test_attr = "a"
 
 
 class SomeControlTypeViewSet(ModelViewSet):

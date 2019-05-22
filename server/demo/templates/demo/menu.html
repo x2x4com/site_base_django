@@ -1,6 +1,23 @@
 {% load i18n %}
 <ul>
-    <li><a href="{% url 'demo:wizard' %}">引导</a></li>
-    <li><a href="{% url 'demo:selectdate' %}">日期选择</a></li>
-
+    <li><a href="{% url 'demo:wizard' %}">引导页面</a></li>
+    <li><a href="{% url 'demo:selectdate' %}">SelectData</a></li>
+    <li><a href="{% url 'demo:char' %}">CharField</a></li>
+    <li class="submenu">
+        <dmc-collapsible>
+            <ul class="collapsible">
+                <li>
+                    <a class="collapsible-header">样式DEMO</a>
+                    <div class="collapsible-body">
+                        <ul>
+                            <li><a href="{% url 'demo:choice' %}" style="color: rgba(0,0,0,.87)">Choiceield</a></li>
+                            <li><a href="{% url 'demo:date' %}" style="color: rgba(0,0,0,.87)">date</a></li>
+                            <li><a href="{% url 'demo:datetime' %}" style="color: rgba(0,0,0,.87)">datetime</a></li>
+                            <li><a href="{% url 'demo:decimal' %}" style="color: rgba(0,0,0,.87)">decimal</a></li>
+                        </ul>
+                    </div>
+                </li>
+                </ul>
+        </dmc-collapsible>
+    </li>
 </ul>
