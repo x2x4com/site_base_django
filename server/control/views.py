@@ -17,10 +17,9 @@ from . import models
 from . import forms
 from . import filters as filters
 
-# class MyModelViewSet(ModelViewSet):
-#    model = models.MyModel
 
-
+# https://simpleisbetterthancomplex.com/tutorial/2016/11/28/how-to-filter-querysets-dynamically.html
+# todo 页面刷新的时候filter已经生效，但是也会会自动刷datatable，怀疑js也被改过，所以下周需要拉官方的js再测试
 class MixListModelView(ListModelView, FilterMixin):
 
     def get(self, request, *args, **kwargs):
@@ -41,15 +40,8 @@ class SomeControlViewSet(ModelViewSet):
     model = models.SomeControl
     # ordering = ['-create_time']
     list_display = ('title', 'type', 'owner', 'create_time', 'tags')
-    test_attr = "a"
-    # filter_backends = (filters.DjangoFilterBackend,)
-    # filterset_fields = ('title', 'owner', )
-    # filterset_class = models.SomeControlFilter
-    # data_filter = models.SomeControlFilter(queryset=model.objects.all())
-    # filter_backends = (filters.DjangoFilterBackend,)
-    # filterset_fields = ('title', 'owner', )
     list_view_class = MixListModelView
-    # list_select_related = True
+    list_select_related = True
 
     def get_queryset(self, request, **kwargs):
         # print(kwargs)
@@ -63,21 +55,21 @@ class SomeControlViewSet(ModelViewSet):
     #     _filter_kwargs = super(SomeControlViewSet, self).filter_kwargs(view_class, **kwargs)
     #     return _filter_kwargs
 
-    def get_list_view(self):
-        # print(dir(self))
-        list_view = super(SomeControlViewSet, self).get_list_view()
-        # print(list_view)
-        return list_view
+    # def get_list_view(self):
+    #     # print(dir(self))
+    #     list_view = super(SomeControlViewSet, self).get_list_view()
+    #     # print(list_view)
+    #     return list_view
 
 
 class SomeControlTypeViewSet(ModelViewSet):
     model = models.SomeControlType
     # ordering = ['-create_time']
     list_display = ('name', 'create_time', 'owner')
-    # list_select_related = True
+    list_select_related = True
 
 
 class SomeControlTagsViewSet(ModelViewSet):
     model = models.SomeControlTags
     list_display = ('name', 'create_time', 'owner')
-    # list_select_related = True
+    list_select_related = True
