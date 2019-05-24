@@ -1,10 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
-from django_filters import rest_framework as filters
 
 
-# Create your models here.
 User = get_user_model()
 
 
@@ -51,13 +49,5 @@ class SomeControlTags(models.Model):
         return self.name
 
 
-# Data Filters
-class SomeControlFilter(filters.FilterSet):
 
-    class Meta:
-        models = SomeControl
-        fields = {
-            'title': ['iexact'],
-            'owner': ['iexact']
-        }
 

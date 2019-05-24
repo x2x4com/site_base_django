@@ -8,14 +8,33 @@ from django.shortcuts import render
 from django.views import generic, static
 from django.contrib.auth.decorators import login_required
 from formtools.wizard.views import SessionWizardView
-from django_filters import rest_framework as filters
+from material.frontend.views.list import ListModelView
+from django_filters.views import FilterView, FilterMixin
+import django_filters
+
 
 from . import models
 from . import forms
-from lib.viewsets import BaseListModelView
+from . import filters as filters
 
 # class MyModelViewSet(ModelViewSet):
 #    model = models.MyModel
+
+
+class MixListModelView(ListModelView, FilterMixin):
+
+    def get(self, request, *args, **kwargs):
+        filterset_class = self.get_filterset_class()
+        self.filterset = self.get_filterset(filterset_class)
+
+        if not self.filterset.is_bound or self.filterset.is_valid() or not self.get_strict():
+            self.object_list = self.filterset.qs
+        else:
+            self.object_list = self.filterset.queryset.none()
+
+        context = self.get_context_data(filter=self.filterset,
+                                        object_list=self.object_list)
+        return self.render_to_response(context)
 
 
 class SomeControlViewSet(ModelViewSet):
@@ -23,13 +42,13 @@ class SomeControlViewSet(ModelViewSet):
     # ordering = ['-create_time']
     list_display = ('title', 'type', 'owner', 'create_time', 'tags')
     test_attr = "a"
-    filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ('title', 'owner', )
-    filterset_class = models.SomeControlFilter(queryset=model.objects.all())
+    # filter_backends = (filters.DjangoFilterBackend,)
+    # filterset_fields = ('title', 'owner', )
+    # filterset_class = models.SomeControlFilter
     # data_filter = models.SomeControlFilter(queryset=model.objects.all())
     # filter_backends = (filters.DjangoFilterBackend,)
     # filterset_fields = ('title', 'owner', )
-    list_view_class = BaseListModelView
+    list_view_class = MixListModelView
     # list_select_related = True
 
     def get_queryset(self, request, **kwargs):
@@ -44,11 +63,11 @@ class SomeControlViewSet(ModelViewSet):
     #     _filter_kwargs = super(SomeControlViewSet, self).filter_kwargs(view_class, **kwargs)
     #     return _filter_kwargs
 
-    # def get_list_view(self):
-    #     # print(dir(self))
-    #     list_view = super(SomeControlViewSet, self).get_list_view()
-    #     # print(list_view)
-    #     return list_view
+    def get_list_view(self):
+        # print(dir(self))
+        list_view = super(SomeControlViewSet, self).get_list_view()
+        # print(list_view)
+        return list_view
 
 
 class SomeControlTypeViewSet(ModelViewSet):
