@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     # wechat app
     # 'wechat_django',
 
-    # 'jet',
+    'jet',
 
     # standard django apps
     'django.contrib.admin',
@@ -54,33 +54,36 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # cms
-    'wagtail.contrib.forms',
-    'wagtail.contrib.redirects',
-    'wagtail.embeds',
-    'wagtail.sites',
-    'wagtail.users',
-    'wagtail.snippets',
-    'wagtail.documents',
-    'wagtail.images',
-    'wagtail.search',
-    'wagtail.admin',
-    'wagtail.core',
-    'wagtail.api.v2',
+    # wagtail setting
+    # 'wagtail.contrib.forms',
+    # 'wagtail.contrib.redirects',
+    # 'wagtail.embeds',
+    # 'wagtail.sites',
+    # 'wagtail.users',
+    # 'wagtail.snippets',
+    # 'wagtail.documents',
+    # 'wagtail.images',
+    # 'wagtail.search',
+    # 'wagtail.admin',
+    # 'wagtail.core',
+    # 'wagtail.api.v2',
     'taggit',
     'modelcluster',
 
-    'django_filters',
     'rest_framework',
+    'django_filters',
     'drf_yasg',
 
+    # wagtail setting
+    # 'cms',
 
     # my apps
+    'lib',
     'api.apps.ApiConfig',
     'control.apps.ControlConfig',
     'demo.apps.DemoConfig',
     'dashboard.apps.DashboardConfig',
-    'cms',
+
 ]
 
 MIDDLEWARE = [
@@ -94,8 +97,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    'wagtail.core.middleware.SiteMiddleware',
-    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
+    # wagtail setting
+    # 'wagtail.core.middleware.SiteMiddleware',
+    # 'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 ]
 
 ROOT_URLCONF = 'base.urls'
@@ -125,6 +129,7 @@ TEMPLATES = [
             # 自定义tags
             'libraries': {
                 'base_debug': 'base.templatetags.base_debug',
+                'data_filter': 'base.templatetags.data_filter',
             },
         },
     },
@@ -228,6 +233,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    )
 }
 
 # CACHES = {

@@ -1,7 +1,7 @@
 {% extends current_module.base_template %}
 {% load i18n material_form material_form_internal material_frontend %}
 
-{% load base_debug %}
+{% load base_debug data_filter %}
 
 {% block breadcrumbs_items %}
 <a class="active" href="{% url view.model|frontend_urlname:'list' %}">{{ view.model|verbose_name_plural|title }}</a>
@@ -48,16 +48,21 @@
     <div class="right-panel">
     <div class="card form-card">
         <div class="card-content">
-            {{ view.viewset | list_attr  }}
+            VIEW:<br>
+            {{ view | list_attr  }}
         </div>
     </div>
     <div class="card form-card">
         <div class="card-content">
-        {% if view.viewset.test_attr %}
-            {{ view.viewset.test_attr  }}
-        {% else %}
-            no attr
-        {% endif %}
+        VIEWset: <br>
+            {{ view.viewset | list_attr }}
+        </div>
+    </div>
+    <div class="card form-card">
+        <div class="card-content">
+        {#% gen_filter_form view.viewset.filterset_class as test1 %#}
+            {{ test1 | list_attr }}
+            {{ test1.filter_for_field }}
         </div>
     </div>
 </div>

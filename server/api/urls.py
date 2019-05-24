@@ -19,16 +19,12 @@
 #     REVISION:  ---
 # ===============================================================================
 
-from django.urls import re_path, include
+from django.urls import re_path, include, path
 from rest_framework.routers import DefaultRouter
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-from wagtail.api.v2.endpoints import PagesAPIEndpoint
-from wagtail.api.v2.router import WagtailAPIRouter
-from wagtail.images.api.v2.endpoints import ImagesAPIEndpoint
-from wagtail.documents.api.v2.endpoints import DocumentsAPIEndpoint
-
+from . import views
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -43,17 +39,14 @@ schema_view = get_schema_view(
    permission_classes=(permissions.AllowAny,),
 )
 
-cms = WagtailAPIRouter('v2')
-cms.register_endpoint('pages', PagesAPIEndpoint)
-cms.register_endpoint('images', ImagesAPIEndpoint)
-cms.register_endpoint('documents', DocumentsAPIEndpoint)
 
 router = DefaultRouter()
+router.register(r'v1/control', views.SomeControlList)
 
 urlpatterns = [
-    re_path(r'^docs/swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=None), name='schema-json'),
-    re_path(r'^docs/swagger/$', schema_view.with_ui('swagger', cache_timeout=None), name='schema-swagger-ui'),
-    re_path(r'^docs/redoc/$', schema_view.with_ui('redoc', cache_timeout=None), name='schema-redoc'),
+    re_path(r'^docs/swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    re_path(r'^docs/swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    re_path(r'^docs/redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     re_path(r'^auth/', include('rest_framework.urls', namespace='rest_framework')),
-    re_path(r'^cms/', cms.urls),
+    path('', include(router.urls))
 ]
