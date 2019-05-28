@@ -81,17 +81,22 @@ class DFListModelView(ListModelView, FilterMixin):
         # ajax生成的url要修改一下，现在第二次点击菜单会报错
 
         _query = request.GET.urlencode()
-        print('qs: %s' % _query)
+        # print('qs: %s' % _query)
 
         context = self.get_context_data(filter=self.filterset,
                                         object_list=self.object_list)
-        print(context['datatable_config']['ajax']['url'])
-        if _query and context['datatable_config']['ajax']['url'] == '.':
-            context['datatable_config']['ajax']['url'] += '/?%s' % _query
+        # print(context['datatable_config']['ajax']['url'])
+        if _query:
+            if context['datatable_config']['ajax']['url'] == ".":
+                context['datatable_config']['ajax']['url'] += '/?%s' % _query
+            elif context['datatable_config']['ajax']['url'] == request.path:
+                context['datatable_config']['ajax']['url'] += '?%s' % _query
+            else:
+                context['datatable_config']['ajax']['url'] = request.path
         else:
-            context['datatable_config']['ajax']['url'] = '.'
+            context['datatable_config']['ajax']['url'] = request.path
         # print(context)
-        print(context['datatable_config']['ajax']['url'])
+        # print(context['datatable_config']['ajax']['url'])
         return self.render_to_response(context)
 
 
@@ -101,11 +106,15 @@ class DFModelViewSet(ModelViewSet):
 
         May not be called if `get_list_view` is overridden.
         """
+        if hasattr(self, 'filterset_fields'):
+            filterset_fields = self.filterset_fields
+        else:
+            filterset_fields = None
         result = {
             'list_display': self.list_display,
             'list_display_links': self.list_display_links,
             'ordering': self.ordering,
-            'filterset_fields': self.filterset_fields,
+            'filterset_fields': filterset_fields,
         }
         result.update(kwargs)
         return self.filter_kwargs(self.list_view_class, **result)

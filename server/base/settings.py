@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -130,6 +131,7 @@ TEMPLATES = [
             'libraries': {
                 'base_debug': 'base.templatetags.base_debug',
                 'data_filter': 'base.templatetags.data_filter',
+                'display_lang_name': 'base.templatetags.display_lang_name',
             },
         },
     },
@@ -174,7 +176,9 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 # LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+# TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
+
 
 USE_I18N = True
 
@@ -252,3 +256,99 @@ REST_FRAMEWORK = {
 WAGTAIL_SITE_NAME = 'My Site Base'
 LOGIN_REDIRECT_URL = '/app/dashboard'
 LOGOUT_REDIRECT_URL = '/login'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'standard': {
+            'format': '[%(asctime)s] %(levelname)s %(filename)s[%(module)s:%(funcName)s:%(lineno)d] %(message)s',
+            # 'datefmt': "%Y/%m/%d %H:%M:%S",
+        },
+        'celery': {
+            'format': '[%(asctime)s] %(levelname)s %(filename)s[%(module)s:%(funcName)s:%(lineno)d] %(message)s',
+            # 'datefmt': "%Y/%m/%d %H:%M:%S",
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard',
+            'stream': sys.stdout
+        },
+        'tasks': {
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'class': 'logging.StreamHandler',
+            'formatter': 'celery',
+            'stream': sys.stdout
+        },
+    },
+    'loggers': {
+        'default': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': False,
+        },
+        'tasks': {
+            'handlers': ['tasks'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': False,
+        },
+    },
+    'root': {
+        'handlers': ['console',],
+        'level': 'INFO',
+        'propagate': True
+    }
+}
+
+
+# for celery
+CELERY_BROKER_URL = os.environ.get('APP_CELERY_BROKER_URL', default='redis://localhost:6379/9')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_IGNORE_RESULT = True
+CELERY_ENABLE_UTC = True
+# 长时间运行Celery有可能发生内存泄露，可以像下面这样设置
+CELERY_MAX_TASKS_PER_CHILD = 40 # 每个worker执行了多少任务就会死掉
+# 任务执行最长时间60分钟 #IR2NB
+CELERY_TASK_SOFT_TIME_LIMIT = 3600
+CELERY_TASK_TIME_LIMIT = 3600
+CELERY_TIMEZONE = 'Asia/Shanghai'
+# 重复任务解决
+# CELERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 28800}
+
+# 制定特定任务路由到特定执行队列
+# CELERY_TASK_ROUTES = {
+#     'picker.tasks.checker': {'queue': 'trans'},
+#     'picker.tasks.retry_monitor': {'queue': 'retries'},
+#     'witness.tasks.counter': {'queue': 'witness'},
+#     'api.tasks.*': {'queue': 'api'},
+#     'picker.tasks.retry_worker': {'queue': 'retries'},
+#     'witness.tasks.erc20_withdraw': {'queue': 'erc20_withdraw'},
+#     'witness.tasks.get_erc20_withdraw_pending_trans': {'queue': 'erc20_withdraw'},
+# }
+#
+# CELERY_TASK_QUEUES = {
+#     "trans": {
+#         "exchange": "trans"
+#     },
+#     'witness': {
+#         'exchange': 'witness'
+#     },
+#     'api': {
+#         'exchange': 'api'
+#     },
+#     'retries': {
+#         'exchange': 'retries'
+#     },
+#     'cron': {
+#         'exchange': 'cron'
+#     },
+#     'erc20_withdraw': {
+#         'exchange': 'erc20_withdraw'
+#     }
+# }
+

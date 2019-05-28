@@ -1,4 +1,4 @@
-{% load i18n static %}
+{% load i18n static display_lang_name %}
 {% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
@@ -74,6 +74,13 @@
                     </div>
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
                         {% block topbar_links %}
+                        <li id="lang_chose_menu"><a class="dropdown-button" href="#!" data-target="lang-menu"><i class="material-icons right">arrow_drop_down</i>Language</a></li>
+                            <ul id="lang-menu" class="dropdown-content"  style="min-width:200px">
+                                {% get_available_languages as langs %}
+                                {% for lang in langs %}
+                                <li><a data-turbolinks="false" href="/set_lang/?lang={{ lang.0 }}">{{ lang.0 | display_lang_name }}</a></li>
+                                {% endfor %}
+                            </ul>
                         {% if user.is_authenticated %}
                         <li><a href="{% url 'logout' %}" data-turbolinks="false"><i class="material-icons right">exit_to_app</i>{% trans "Log out" %}</a></li>
                         {% else %}

@@ -31,7 +31,7 @@ from django.views import generic
 # from wagtail.documents.api.v2.endpoints import DocumentsAPIEndpoint
 
 
-# from .views import index_view
+from .views import index_view, change_lang
 # import wechat_django
 
 # wagtail与drf_yasg不兼容
@@ -42,9 +42,10 @@ from django.views import generic
 
 urlpatterns = [
     re_path('^(:?app/)?login/?$', generic.RedirectView.as_view(url='accounts/login/', permanent=True)),
+    path('set_lang/', change_lang),
     path('app/', include(frontend_urls)),
     path('api/', include('api.urls')),
-    path('i18n/', include('django.conf.urls.i18n')),
+    # path('i18n/', include('django.conf.urls.i18n')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('jet/', include('jet.urls', 'jet')),
     path('site/admin/', admin.site.urls),

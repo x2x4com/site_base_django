@@ -29,14 +29,14 @@ from django.utils.translation import ugettext_lazy as _
 from . import models
 
 
-@admin.register(models.SomeControl)
-class SomeControlAdmin(admin.ModelAdmin):
-    icon = '<i class="fa fa-tint"></i>'
-    list_display = ('title', 'type', 'owner', 'create_time', )
-
-
-@admin.register(models.SomeControlType)
-class SomeControlTypeAdmin(admin.ModelAdmin):
-    icon = '<i class="fa fa-tint"></i>'
-    actions = None
-    list_display = ('name',)
+# @admin.register(models.SomeControl)
+# class SomeControlAdmin(admin.ModelAdmin):
+#     icon = '<i class="fa fa-tint"></i>'
+#     list_display = ('title', 'type', 'owner', 'create_time', )
+#
+#
+# @admin.register(models.SomeControlType)
+# class SomeControlTypeAdmin(admin.ModelAdmin):
+#     icon = '<i class="fa fa-tint"></i>'
+#     actions = None
+#     list_display = ('name',)

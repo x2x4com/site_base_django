@@ -10,7 +10,11 @@
 
 {% block content %}
 {% block left-panel %}
+{% if view.filterset.form is None  %}
+<div class="left-panel wide">
+{% else %}
 <div class="left-panel">
+{% endif %}
     <div class="card list-card">
         <div class="card-content">
             <dmc-datatable config="{{ datatable_config|to_json_attr }}">
@@ -45,8 +49,9 @@
 </div>
 {% endblock left-panel %}
 {% block right-panel %}
+{% if view.filterset.form is not None  %}
     <div class="right-panel">
-        {% if view.filterset.form is not None  %}
+
             <dmc-form>
                 <form action="." method="get" data-control-form>
                     <div class="card form-card">
@@ -62,7 +67,7 @@
                     </div>
                 </form>
             </dmc-form>
-        {% endif %}
+
     <!--
     <div class="card form-card">
         <div class="card-content">
@@ -71,6 +76,7 @@
     </div>
     -->
 </div>
+{% endif %}
 {% endblock right-panel %}
 {% block action_btn %}
 <div class="fixed-action-btn">

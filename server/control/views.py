@@ -17,19 +17,24 @@ from . import forms
 class SomeControlViewSet(DFModelViewSet):
     model = models.SomeControl
     # ordering = ['-create_time']
-    list_display = ('title', 'type', 'owner', 'create_time', 'tags')
+    list_display = ('title', 'type', 'owner', 'create_time', 'show_tags')
     list_view_class = DFListModelView
     filterset_fields = ('title', 'type', 'tags')
     list_select_related = True
+
+    def show_tags(self, obj):
+        tags = obj.tags.all()
+        tags = [t.name for t in tags]
+        return ", ".join(tags)
 
 
 class SomeControlTypeViewSet(DFModelViewSet):
     model = models.SomeControlType
     # ordering = ['-create_time']
     list_display = ('name', 'create_time', 'owner')
-    list_view_class = DFListModelView
-    filterset_fields = ('name',)
-    list_select_related = True
+    # list_view_class = DFListModelView
+    # filterset_fields = ('name',)
+    # list_select_related = True
 
 
 class SomeControlTagsViewSet(DFModelViewSet):
