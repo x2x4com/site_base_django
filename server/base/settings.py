@@ -75,6 +75,10 @@ INSTALLED_APPS = [
     'django_filters',
     'drf_yasg',
 
+    # celery integration
+    'djcelery_email',
+    'django_celery_beat',
+
     # wagtail setting
     # 'cms',
 

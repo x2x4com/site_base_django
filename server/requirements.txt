@@ -23,3 +23,5 @@ django-viewflow
 django-material
 django-formtools
 coreapi
+flower
+channels
