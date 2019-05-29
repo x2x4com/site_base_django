@@ -60,6 +60,7 @@ typings/
 
 # venv
 venv
+venv_site_base_django
 
 # my config
 package-lock.json
