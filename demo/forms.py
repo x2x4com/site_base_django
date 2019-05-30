@@ -33,25 +33,7 @@ from django.template import Template
 from django.utils import timezone
 # import django
 import django.forms as forms
-from material.base import LayoutMixin as ViewformLayoutMixin
-
-
-class SourceCodeMixin(object):
-    def source(self):
-        import inspect
-        import itertools
-
-        lines = inspect.getsourcelines(self.__class__)[0]
-        lines = [x for x in itertools.takewhile(lambda x: not x.strip().startswith('template'), lines)]
-        return ''.join(lines)
-
-
-class Form(SourceCodeMixin, forms.Form):
-    pass
-
-
-class LayoutMixin(SourceCodeMixin, ViewformLayoutMixin):
-    pass
+from base.forms import Form, LayoutMixin
 
 
 class FakeFieldFile(object):

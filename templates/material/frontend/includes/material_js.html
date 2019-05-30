@@ -1,10 +1,6 @@
 {% load static %}
-{% if not debug %}
-<!--script src="{% static 'material/js/materialize.frontend.min.js' %}"></script-->
-<script src="{% static '123.js' %}"></script>
-{% else %}
-<script src="{% static 'material/js/custom-elements.min.js' %}"></script>
-<script src="{% static 'material/js/materialize.components.js' %}"></script>
+<!--script src="{% static 'material/js/custom-elements.min.js' %}"></script-->
+<script src="{% static 'js/materialize.components.js' %}"></script>
 <script src="{% static 'material/js/turbolinks.js' %}"></script>
 <script src="{% static 'material/js/jquery.js' %}"></script>
 <script src="{% static 'material/js/jquery.dataTables.js' %}"></script>
@@ -15,4 +11,4 @@
 <script src="{% static 'material/js/dataTables.fixedHeader.js' %}"></script>
 <script src="{% static 'material/js/dataTables.responsive.js' %}"></script>
 <script src="{% static 'material/js/materialize.js' %}"></script>
-{% endif %}
+<script src="{% static 'js/dataTables.checkboxes.js' %}"></script>

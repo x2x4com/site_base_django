@@ -13,6 +13,11 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 import sys
 
+
+def is_true(s: str) -> bool:
+    return str(s).lower() in ['true', '1']
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,6 +30,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '0x(o)#=@*nhtq+qo=fb@(gylwo7v_n-tq(z#g-62#u%sreq9v9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+#DEBUG = is_true(os.environ.get('APP_DEBUG', 'false'))
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
@@ -261,51 +267,51 @@ WAGTAIL_SITE_NAME = 'My Site Base'
 LOGIN_REDIRECT_URL = '/app/dashboard'
 LOGOUT_REDIRECT_URL = '/login'
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': True,
-    'formatters': {
-        'standard': {
-            'format': '[%(asctime)s] %(levelname)s %(filename)s[%(module)s:%(funcName)s:%(lineno)d] %(message)s',
-            # 'datefmt': "%Y/%m/%d %H:%M:%S",
-        },
-        'celery': {
-            'format': '[%(asctime)s] %(levelname)s %(filename)s[%(module)s:%(funcName)s:%(lineno)d] %(message)s',
-            # 'datefmt': "%Y/%m/%d %H:%M:%S",
-        },
-    },
-    'handlers': {
-        'console': {
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
-            'class': 'logging.StreamHandler',
-            'formatter': 'standard',
-            'stream': sys.stdout
-        },
-        'tasks': {
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
-            'class': 'logging.StreamHandler',
-            'formatter': 'celery',
-            'stream': sys.stdout
-        },
-    },
-    'loggers': {
-        'default': {
-            'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
-            'propagate': False,
-        },
-        'tasks': {
-            'handlers': ['tasks'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
-            'propagate': False,
-        },
-    },
-    'root': {
-        'handlers': ['console',],
-        'level': 'INFO',
-        'propagate': True
-    }
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': True,
+#     'formatters': {
+#         'standard': {
+#             'format': '[%(asctime)s] %(levelname)s %(filename)s[%(module)s:%(funcName)s:%(lineno)d] %(message)s',
+#             # 'datefmt': "%Y/%m/%d %H:%M:%S",
+#         },
+#         'celery': {
+#             'format': '[%(asctime)s] %(levelname)s %(filename)s[%(module)s:%(funcName)s:%(lineno)d] %(message)s',
+#             # 'datefmt': "%Y/%m/%d %H:%M:%S",
+#         },
+#     },
+#     'handlers': {
+#         'console': {
+#             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'standard',
+#             'stream': sys.stdout
+#         },
+#         'tasks': {
+#             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'celery',
+#             'stream': sys.stdout
+#         },
+#     },
+#     'loggers': {
+#         'default': {
+#             'handlers': ['console'],
+#             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+#             'propagate': False,
+#         },
+#         'tasks': {
+#             'handlers': ['tasks'],
+#             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+#             'propagate': False,
+#         },
+#     },
+#     'root': {
+#         'handlers': ['console',],
+#         'level': 'INFO',
+#         'propagate': True
+#     }
+# }
 
 
 # for celery

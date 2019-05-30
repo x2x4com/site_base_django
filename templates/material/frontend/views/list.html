@@ -17,27 +17,40 @@
 {% endif %}
     <div class="card list-card">
         <div class="card-content">
-            <dmc-datatable config="{{ datatable_config|to_json_attr }}">
+            <dmc-datatable config="{{ datatable_config|to_json_attr }}" checkboxes="true">
                 <table id="table" class="table bordered" data-form-control="datatable" style="width:100%">
                     <thead>
                         <tr>
+
                             {% for header, header_title in headers %}
-                            <th data-name="{{ header }}" class="{{ header }}">{{ header_title|title }}</th>
+                                {% if header == 'pk' %}
+                                    <th style="width: 40px; padding-right: 0px;" class="">
+                                    <label>
+                                    <input class="filled-in" type="checkbox" id="action-toggle">
+                                    <span></span>
+                                </label>
+                                    </th>
+                                {% else %}
+                                    <th data-name="{{ header }}" class="{{ header }}">{{ header_title|title }}</th>
+                                {% endif %}
                             {% endfor %}
                         </tr>
                     </thead>
                     <tbody>
                         <tr style="display:none"><td></td></tr> {# fix for invalid colpan on datatable init #}
                         {% for item, row in data %}
+
                         <tr>
+
                             {% for column_name, item in row.items %}
-                            <td>
-                                {% if column_name in view.datalist.list_display_links %}
-                                <a href="#">{{ item }}</a>
-                                {% else %}
-                                {{ item }}
-                                {% endif %}
-                            </td>
+
+                                    <td>
+                                        {% if column_name in view.datalist.list_display_links %}
+                                        <a href="#">{{ item }}</a>
+                                        {% else %}
+                                        {{ item }}
+                                        {% endif %}
+                                    </td>
                             {% endfor %}
                         </tr>
                         {% endfor %}
@@ -68,13 +81,24 @@
                 </form>
             </dmc-form>
 
-    <!--
-    <div class="card form-card">
+    {% if view.viewset.list_actions is not None %}
+    <div class="card form-card" id="actionCard">
         <div class="card-content">
+            <div class="card-title">{% trans 'Action' %}</div>
+            <dmc-select>
+                <select name="action_url">
+                    <option disabled selected>{% trans 'Choose your option' %}</option>
 
+                    <option value="{{ view.viewset.list_actions.1 }}">{% trans view.viewset.list_actions.0 %}</option>
+
+                </select>
+            </dmc-select>
+            <div class="card-actions right-align">
+                <button class="btn" type="submit" name="action">{% trans 'Go' %}</button>
+            </div>
         </div>
     </div>
-    -->
+    {% endif %}
 </div>
 {% endif %}
 {% endblock right-panel %}
@@ -86,3 +110,10 @@
 </div>
 {% endblock %}
 {% endblock %}
+
+{% block footer %}
+    <div style="display:none" id="_action_token">
+        <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}' />
+    </div>
+
+{% endblock footer %}

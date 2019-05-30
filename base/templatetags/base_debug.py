@@ -27,3 +27,8 @@ register = template.Library()
 @register.filter
 def list_attr(obj):
     return dir(obj)
+
+
+@register.filter
+def show_type(obj):
+    return type(obj)
