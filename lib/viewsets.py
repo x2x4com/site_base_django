@@ -29,6 +29,11 @@ from django.views.generic.base import TemplateResponseMixin
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.http import Http404
 from django.http import HttpResponseRedirect
+from django.db.models.deletion import Collector
+from django.db import router
+from django.utils.encoding import force_text
+from django.utils.translation import ugettext_lazy as _
+from django.contrib import messages
 
 
 class DFDeleteModelView(DeleteModelView):
@@ -41,7 +46,6 @@ class DFDeleteModelView(DeleteModelView):
         print('in get_object')
         queryset = self.get_queryset()
         if _ids is None:
-
             model = queryset.model
             print(self.pk_url_kwarg)
             pk = self.kwargs.get(self.pk_url_kwarg)
@@ -62,28 +66,61 @@ class DFDeleteModelView(DeleteModelView):
         self.queryset = queryset.model.objects.filter(id__in=_ids)
         return self.queryset.all()
 
+    def _get_deleted_objects(self):
+        collector = Collector(using=router.db_for_write(self.object))
+        obj = [self.object]
+        if hasattr(self, 'ids'):
+            obj = list()
+            if hasattr(self, 'objects'):
+                for _obj in self.objects:
+                    obj.append(_obj)
+        collector.collect(obj)
+        return collector.data
+
     def delete(self, request, *args, **kwargs):
         # response = super(DeleteModelView, self).delete(request, *args, **kwargs)
         print("delete 0")
-        ids = request.POST.getlist('pk', default=None)
-        print(ids)
+        self.ids = request.POST.getlist('pk', default=None)
+
+        print('ids: %s' % self.ids)
         _confirm = request.POST.get('_confirm', None)
         print(_confirm)
-        self.object = self.get_object(_ids=ids)
-        if _confirm is None:
-            context = dict()
-            for _obj in self.object:
-                print(dir(_obj))
-                print(type(_obj))
-                context.update(self.get_context_data(object=_obj))
+        if self.ids:
+            self.objects = self.get_object(_ids=self.ids)
+            self.object = self.objects[0]
+        else:
+            self.object = self.get_object()
+
+        if _confirm is None and len(self.ids) > 0:
+            # todo 重构context与html页面
+            if len(self.ids) == 0:
+                self.template_name = 'material/frontend/views/muti_confirm_delete.html'
+            print(self.get_template_names())
+            context = self.get_context_data(object=self.object)
+            print(context)
             return self.render_to_response(context)
+
+
         print("delete 1")
         success_url = self.get_success_url()
         print("delete 2")
-        self.object.delete()
+        if self.ids:
+            print("删除多条")
+            for _obj in self.objects:
+                _obj.delete()
+        else:
+            print("删除单条")
+            self.object.delete()
         print("delete 3")
         self.message_user()
         return HttpResponseRedirect(success_url)
+
+    def message_user(self):
+        message = _('The {name} "{link}"  was deleted successfully.'.format(
+            name=force_text(self.model._meta.verbose_name),
+            link=force_text(self.object)
+        ))
+        messages.add_message(self.request, messages.SUCCESS, message, fail_silently=True)
 
     def post(self, request, *args, **kwargs):
         print("in post")
@@ -103,6 +140,8 @@ class DFDeleteModelView(DeleteModelView):
             return HttpResponseRedirect('/' + _target)
         self.object = self.get_object()
         context = self.get_context_data(object=self.object)
+        print(context)
+        print(self.get_template_names())
         return self.render_to_response(context)
 
 
