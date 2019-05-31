@@ -38,33 +38,34 @@ from django.contrib import messages
 
 class DFDeleteModelView(DeleteModelView):
     # 重写delete支持多行删除
-    def get_object(self, _ids=None):
+    def get_object(self,):
         """Retrieve the object for delete.
 
         Check object delete permission at the same time.
         """
-        print('in get_object')
+        # print('in get_object')
         queryset = self.get_queryset()
-        if _ids is None:
-            model = queryset.model
-            print(self.pk_url_kwarg)
-            pk = self.kwargs.get(self.pk_url_kwarg)
-            print('delete pk: %s' % pk)
-            if pk is not None:
-                try:
-                    print("get_object 1")
-                    self.kwargs[self.pk_url_kwarg] = model._meta.pk.to_python(pk)
-                except (ValidationError, ValueError):
-                    raise Http404
-            print("get_object 2")
-            obj = super(DeleteModelView, self).get_object()
-            if not self.has_object_permission(self.request, obj):
-                raise PermissionDenied
-            print("get_object 3")
-            return obj
-        # in Blog.objects.filter(pk__in=[1, 4, 7])
-        self.queryset = queryset.model.objects.filter(id__in=_ids)
-        return self.queryset.all()
+        if hasattr(self, 'ids'):
+            if len(self.ids) > 0:
+                # in Blog.objects.filter(pk__in=[1, 4, 7])
+                self.queryset = queryset.model.objects.filter(id__in=self.ids)
+                return self.queryset.all()
+        model = queryset.model
+        # print(self.pk_url_kwarg)
+        pk = self.kwargs.get(self.pk_url_kwarg)
+        # print('delete pk: %s' % pk)
+        if pk is not None:
+            try:
+                # print("get_object 1")
+                self.kwargs[self.pk_url_kwarg] = model._meta.pk.to_python(pk)
+            except (ValidationError, ValueError):
+                raise Http404
+        # print("get_object 2")
+        obj = super(DeleteModelView, self).get_object()
+        if not self.has_object_permission(self.request, obj):
+            raise PermissionDenied
+        # print("get_object 3")
+        return obj
 
     def _get_deleted_objects(self):
         collector = Collector(using=router.db_for_write(self.object))
@@ -79,46 +80,54 @@ class DFDeleteModelView(DeleteModelView):
 
     def delete(self, request, *args, **kwargs):
         # response = super(DeleteModelView, self).delete(request, *args, **kwargs)
-        print("delete 0")
+        # print("delete 0")
         self.ids = request.POST.getlist('pk', default=None)
-
-        print('ids: %s' % self.ids)
+        # print('ids: %s' % self.ids)
         _confirm = request.POST.get('_confirm', None)
-        print(_confirm)
-        if self.ids:
-            self.objects = self.get_object(_ids=self.ids)
+        # print(_confirm)
+        if len(self.ids) > 0:
+            self.objects = self.get_object()
             self.object = self.objects[0]
+            # print(self.object)
         else:
             self.object = self.get_object()
+            # print(self.object)
 
         if _confirm is None and len(self.ids) > 0:
-            # todo 重构context与html页面
-            if len(self.ids) == 0:
-                self.template_name = 'material/frontend/views/muti_confirm_delete.html'
-            print(self.get_template_names())
+            self.template_name = 'material/frontend/views/muti_confirm_delete.html'
+            # print(self.get_template_names())
             context = self.get_context_data(object=self.object)
-            print(context)
+            # print(context)
             return self.render_to_response(context)
 
-
-        print("delete 1")
+        # print("delete 1")
         success_url = self.get_success_url()
-        print("delete 2")
-        if self.ids:
-            print("删除多条")
+        # print("delete 2")
+        if len(self.ids) > 0:
+            # print("删除多条")
             for _obj in self.objects:
                 _obj.delete()
         else:
-            print("删除单条")
+            # print("删除单条")
             self.object.delete()
-        print("delete 3")
+        # print("delete 3")
         self.message_user()
         return HttpResponseRedirect(success_url)
 
     def message_user(self):
+        if hasattr(self, 'objects'):
+            link = ""
+            for _obj in self.objects:
+                if len(link) == 0:
+                    link = force_text(_obj)
+                else:
+                    link = link + " , " + force_text(_obj)
+        else:
+            link = force_text(self.object)
+
         message = _('The {name} "{link}"  was deleted successfully.'.format(
             name=force_text(self.model._meta.verbose_name),
-            link=force_text(self.object)
+            link=link
         ))
         messages.add_message(self.request, messages.SUCCESS, message, fail_silently=True)
 
@@ -203,7 +212,7 @@ class DFListModelView(ListModelView, FilterMixin):
 
         context = self.get_context_data(filter=self.filterset,
                                         object_list=self.object_list)
-        print(context['datatable_config']['ajax']['url'])
+        # print(context['datatable_config']['ajax']['url'])
         if _query:
             context['datatable_config']['ajax']['url'] = request.path + '?%s' % _query
         else:
@@ -224,6 +233,30 @@ class DFListModelView(ListModelView, FilterMixin):
 
         return columns
 
+    def get_list_display(self):
+        """Return list of columns to display."""
+        # print(dir(self.viewset))
+        if hasattr(self, 'viewset'):
+            if hasattr(self.viewset, 'list_actions'):
+                return ('pk', ) + self.list_display
+        return self.list_display
+
+    def get_list_display_links(self, list_display):
+        """Return columns list that would be linked to the object details.
+
+        If `self.list_display_links` is not set, the first column would be used.
+        """
+        if (self.list_display_links or
+                self.list_display_links is None or
+                not list_display):
+            return self.list_display_links
+        else:
+            # Use only the first item in list_display as link
+            if hasattr(self, 'viewset'):
+                if hasattr(self.viewset, 'list_actions'):
+                    return list(list_display)[1:2]
+            return list(list_display)[:1]
+
 
 class DFModelViewSet(ModelViewSet):
     # filterset_fields = ( )
@@ -241,14 +274,19 @@ class DFModelViewSet(ModelViewSet):
             'ordering': self.ordering,
         }
 
+        if hasattr(self, 'list_actions'):
+            result.update({'list_actions': self.list_actions})
+
         if hasattr(self, 'filterset_fields'):
             result.update({'filterset_fields': self.filterset_fields})
+        else:
+            result.update({'filterset_fields': ()})
 
         result.update(kwargs)
         return self.filter_kwargs(self.list_view_class, **result)
 
-    def get_queryset(self, request, **kwargs):
-        # print(kwargs)
-        # qs = super(SomeControlViewSet, self).get_queryset(request, **kwargs)
-        # print(dir(self))
-        return self.model.objects.filter(owner=request.user)
+    # def get_queryset(self, request, **kwargs):
+    #     # print(kwargs)
+    #     # qs = super(SomeControlViewSet, self).get_queryset(request, **kwargs)
+    #     # print(dir(self))
+    #     return self.model.objects.filter(owner=request.user)

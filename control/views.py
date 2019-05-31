@@ -16,7 +16,7 @@ from . import forms
 class SomeControlViewSet(DFModelViewSet):
     model = models.SomeControl
     # ordering = ['-create_time']
-    list_display = ('pk', 'title', 'type', 'owner', 'create_time', 'show_tags')
+    list_display = ('title', 'type', 'owner', 'create_time', 'show_tags')
     list_display_links = ('title', )
     filterset_fields = ('title', 'type', 'tags')
     list_select_related = True
@@ -27,10 +27,6 @@ class SomeControlViewSet(DFModelViewSet):
         tags = [t.name for t in tags]
         return ", ".join(tags)
 
-    def _pk(self, obj):
-        # print(dir(obj.pk))
-        return int(obj.pk)
-
 
 class SomeControlTypeViewSet(DFModelViewSet):
     model = models.SomeControlType
@@ -39,10 +35,11 @@ class SomeControlTypeViewSet(DFModelViewSet):
     # list_view_class = DFListModelView
     # filterset_fields = ('name',)
     list_select_related = True
+    list_actions = ('Delete selected objects', 'action/delete/')
 
 
 class SomeControlTagsViewSet(DFModelViewSet):
     model = models.SomeControlTags
     list_display = ('name', 'create_time', 'owner')
-    filterset_fields = ('name',)
+    filterset_fields = ('owner',)
     list_select_related = True

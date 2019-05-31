@@ -16,7 +16,7 @@
 
                   {% for model, items in deleted_objects.items %}
                   <div class="card-content">
-                  <div class="card-title">{% blocktrans %}Are you sure you want to delete the {{ object }} and related items?{% endblocktrans %}</div>
+                  <div class="card-title">{% blocktrans %}Are you sure you want to delete {{ deleted_objects.items | length }} objects and related items?{% endblocktrans %}</div>
                   <h5>{{ model|verbose_name_plural|title }}</h5>
                   {% for item in items %}
                      <input type="hidden" name="pk" value="{{ item.pk }}">

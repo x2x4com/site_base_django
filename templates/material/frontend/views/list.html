@@ -10,7 +10,7 @@
 
 {% block content %}
 {% block left-panel %}
-{% if view.filterset.form is None  %}
+{% if view.filterset.form.fields|length == 0 and view.viewset.list_actions is None %}
 <div class="left-panel wide">
 {% else %}
 <div class="left-panel">
@@ -43,7 +43,14 @@
                         <tr>
 
                             {% for column_name, item in row.items %}
-
+                                {% if column_name == 'pk' %}
+                                <td class="dt-body-center">
+                                <label>
+                                    <input class="filled-in" type="checkbox" name="pk" id="_selected_action_1" value="">
+                                    <span></span>
+                                </label>
+                            </td>
+                                {% else %}
                                     <td>
                                         {% if column_name in view.datalist.list_display_links %}
                                         <a href="#">{{ item }}</a>
@@ -51,6 +58,7 @@
                                         {{ item }}
                                         {% endif %}
                                     </td>
+                                {% endif %}
                             {% endfor %}
                         </tr>
                         {% endfor %}
@@ -62,9 +70,10 @@
 </div>
 {% endblock left-panel %}
 {% block right-panel %}
-{% if view.filterset.form is not None  %}
+    {{ view.filterset.form.fields.count }}
+{% if view.filterset.form.fields|length > 0 or view.viewset.list_actions is not None %}
     <div class="right-panel">
-
+        {% if view.filterset.form.fields|length > 0 %}
             <dmc-form>
                 <form action="." method="get" data-control-form>
                     <div class="card form-card">
@@ -80,26 +89,27 @@
                     </div>
                 </form>
             </dmc-form>
+        {% endif %}
 
-    {% if view.viewset.list_actions is not None %}
-    <div class="card form-card" id="actionCard">
-        <div class="card-content">
-            <div class="card-title">{% trans 'Action' %}</div>
-            <dmc-select>
-                <select name="action_url">
-                    <option disabled selected>{% trans 'Choose your option' %}</option>
+        {% if view.viewset.list_actions is not None %}
+        <div class="card form-card" id="actionCard">
+            <div class="card-content">
+                <div class="card-title">{% trans 'Action' %}</div>
+                    <dmc-select>
+                        <select name="action_url">
+                            <option disabled selected>{% trans 'Choose your option' %}</option>
 
-                    <option value="{{ view.viewset.list_actions.1 }}">{% trans view.viewset.list_actions.0 %}</option>
+                            <option value="{{ view.viewset.list_actions.1 }}">{% trans view.viewset.list_actions.0 %}</option>
 
-                </select>
-            </dmc-select>
-            <div class="card-actions right-align">
-                <button class="btn" type="submit" name="action">{% trans 'Go' %}</button>
+                        </select>
+                    </dmc-select>
+                <div class="card-actions right-align">
+                    <button class="btn" type="submit" name="action">{% trans 'Go' %}</button>
+                </div>
             </div>
         </div>
+        {% endif %}
     </div>
-    {% endif %}
-</div>
 {% endif %}
 {% endblock right-panel %}
 {% block action_btn %}
