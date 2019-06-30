@@ -1,0 +1,377 @@
+{% extends 'material/frontend/base.html' %}
+
+{% load i18n material_form %}
+
+{% block title %}{{ current_module.verbose_name }} - {{ block.super }}{% endblock %}
+{% block page_title %}<a href="{{ current_module.index_url }}">{{ current_module.verbose_name }}</a>{% endblock %}
+{% block breadcrumbs_items %}{{ form.description }}{% endblock %}
+
+
+{% block content %}
+
+<div class="left-panel wide">
+        <div class="card">
+            <div class="card-content">
+                <div id="vue-app">
+                    <a-row style="margin-bottom: 20px">
+                        {% verbatim %}
+                        {{ message }}
+                        {% endverbatim %}
+
+                            <a-spin />
+
+                    </a-row>
+
+
+                    <a-row style="margin-bottom: 20px">
+                    <a-dropdown-button @click="handleButtonClick">
+                      Dropdown
+                      <a-menu slot="overlay" @click="handleMenuClick">
+                          <a-menu-item key="1"><a-icon type="home"></a-icon>1st menu item</a-menu-item>
+                        <a-menu-item key="2">2nd menu item</a-menu-item>
+                        <a-menu-item key="3">3rd item</a-menu-item>
+                      </a-menu>
+                    </a-dropdown-button>
+                    </a-row>
+
+                    <a-row style="margin-bottom: 20px">
+
+                      <a-dropdown>
+                        <a class="ant-dropdown-link" href="#">
+                          Hover me <a-icon type="down" />
+                        </a>
+                        <a-menu slot="overlay">
+                          <a-menu-item>
+                            <a href="javascript:;">1st menu item</a>
+                          </a-menu-item>
+                          <a-menu-item>
+                            <a href="javascript:;">2nd menu item</a>
+                          </a-menu-item>
+                          <a-menu-item>
+                            <a href="javascript:;">3rd menu item</a>
+                          </a-menu-item>
+                        </a-menu>
+                      </a-dropdown>
+                    </a-row>
+
+
+                    <a-row style="margin-bottom: 20px">
+                        <a-checkbox @change="onChangeBox">Checkbox</a-checkbox>
+                    </a-row>
+
+                    <a-row style="margin-bottom: 20px">
+                        <div>
+                          <a-button type="primary" @click="showModal">Open Modal</a-button>
+                          <a-modal
+                            title="Basic Modal"
+                            v-model="visibleModal"
+                            @ok="handleOk"
+                          >
+                            <p>Some contents...</p>
+                            <p>Some contents...</p>
+                            <p>Some contents...</p>
+                          </a-modal>
+                        </div>
+
+                    </a-row>
+
+                    <a-row style="margin-bottom: 20px">
+                        <a-date-picker @change="onChangeDate" />
+                    </a-row>
+                    <a-row style="margin-bottom: 20px">
+                          <a-rate v-model='valueStar'/>
+                    </a-row>
+                    <a-row style="margin-bottom: 20px">
+                        <a-switch defaultChecked @change='onChangeSwitch'/>
+                    </a-row>
+                    <a-row style="margin-bottom: 20px">
+<a-popover title="Title">
+    <template slot="content">
+      <p>Content</p>
+      <p>Content</p>
+    </template>
+    <a-button type="primary">Hover me</a-button>
+  </a-popover>
+                    </a-row>
+
+                    <a-row style="margin-bottom: 20px">
+
+                        <a-progress :percent="percent" status="active"/>
+                    </a-row>
+
+                    <a-row style="margin-bottom: 20px">
+                        <a-button type="primary" @click="info">Display normal message</a-button>
+                    </a-row>
+
+                    <a-row style="margin-bottom: 20px">
+<a-button type="primary" @click="showDrawer">
+      Open
+    </a-button>
+    <a-drawer
+      title="Basic Drawer"
+      placement="right"
+      :closable="false"
+      @close="onClose"
+      :visible="visibleDrawer"
+    >
+      <p>Some contents...</p>
+      <p>Some contents...</p>
+      <p>Some contents...</p>
+    </a-drawer>
+                    </a-row>
+
+
+                </div>
+                <!-- END VUE APP-->
+
+                <div id="mountNode"></div>
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block css %}
+{{ block.super }}
+
+{% endblock %}
+
+
+{% block js %}
+        {{ block.super }}
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g2-3.5.1/dist/g2.min.js"></script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.10.1/dist/data-set.min.js"></script>
+
+
+
+
+{% endblock %}
+
+
+
+
+
+{% block main %}
+{{ block.super }}
+
+<script>
+    $('.dropdown-button').dropdown();
+    var app = new Vue({
+        el: '#vue-app',
+        data: {
+            message: 'Hello Vue!',
+            visibleModal: false,
+            visibleDrawer: false,
+            valueStar: 3,
+            percent: 10,
+        },
+        methods: {
+            handleButtonClick(e) {
+                console.log('click left button', e);
+            },
+            handleMenuClick(e) {
+                console.log('click', e);
+            },
+            onChangeBox (e) {
+                console.log(`checked = ${e.target.checked}`)
+            },
+
+            showModal() {
+                this.visibleModal = true
+            },
+            handleOk(e) {
+                console.log(e);
+                this.visibleModal = false
+            },
+            onChangeDate(date, dateString) {
+                console.log(date, dateString);
+            },
+            onChangeSwitch(checked){
+                console.log(`a-switch to ${checked}`);
+            },
+            onPanelChangeCal(value, mode) {
+                console.log(value, mode);
+            },
+            info (e) {
+                this.$message.info('This is a normal message, ' + e);
+            },
+            success (e) {
+                this.$message.success('This is a message of success');
+            },
+            error (e) {
+                this.$message.error('This is a message of error');
+            },
+            warning (e) {
+                this.$message.warning('This is message of warning');
+            },
+            showDrawer() {
+                this.visibleDrawer = true
+            },
+            onClose() {
+                this.visibleDrawer = false
+            },
+        }
+    });
+
+    $('<div id="slider"></div>').insertAfter('#mountNode');
+  $.getJSON('/app/vue/data.json', function(data) {
+    // 设置状态量，时间格式建议转换为时间戳，转换为时间戳时请注意区间
+    var ds = new DataSet({
+      state: {
+        start: '2015-04-07',
+        end: '2015-07-28'
+      }
+    });
+    var dv = ds.createView();
+    dv.source(data).transform({
+      type: 'filter',
+      callback: function callback(obj) {
+        var date = obj.time;
+        return date <= ds.state.end && date >= ds.state.start;
+      }
+    }).transform({
+      type: 'map',
+      callback: function callback(obj) {
+        obj.trend = obj.start <= obj.end ? '上涨' : '下跌';
+        obj.range = [obj.start, obj.end, obj.max, obj.min];
+        return obj;
+      }
+    });
+    var chart = new G2.Chart({
+      container: 'mountNode',
+      forceFit: true,
+      height: window.innerHeight - 60,
+      animate: false,
+      padding: [10, 40, 40, 40]
+    });
+    chart.source(dv, {
+      'time': {
+        type: 'timeCat',
+        nice: false,
+        range: [0, 1]
+      },
+      trend: {
+        values: ['上涨', '下跌']
+      },
+      'volumn': {
+        alias: '成交量'
+      },
+      'start': {
+        alias: '开盘价'
+      },
+      'end': {
+        alias: '收盘价'
+      },
+      'max': {
+        alias: '最高价'
+      },
+      'min': {
+        alias: '最低价'
+      },
+      'range': {
+        alias: '股票价格'
+      }
+    });
+    chart.legend({
+      offset: 20
+    });
+    chart.tooltip({
+      showTitle: false,
+      itemTpl: '<li data-index={index}>' + '<span style="background-color:{color};" class="g2-tooltip-marker"></span>' + '{name}{value}</li>'
+    });
+
+    var kView = chart.view({
+      end: {
+        x: 1,
+        y: 0.5
+      }
+    });
+    kView.source(dv);
+    kView.schema().position('time*range').color('trend', function(val) {
+      if (val === '上涨') {
+        return '#f04864';
+      }
+
+      if (val === '下跌') {
+        return '#2fc25b';
+      }
+    }).shape('candle').tooltip('time*start*end*max*min', function(time, start, end, max, min) {
+      return {
+        name: time,
+        value: '<br><span style="padding-left: 16px">开盘价：' + start + '</span><br/>' + '<span style="padding-left: 16px">收盘价：' + end + '</span><br/>' + '<span style="padding-left: 16px">最高价：' + max + '</span><br/>' + '<span style="padding-left: 16px">最低价：' + min + '</span>'
+      };
+    });
+
+    var barView = chart.view({
+      start: {
+        x: 0,
+        y: 0.65
+      }
+    });
+    barView.source(dv, {
+      volumn: {
+        tickCount: 2
+      }
+    });
+    barView.axis('time', {
+      tickLine: null,
+      label: null
+    });
+    barView.axis('volumn', {
+      label: {
+        formatter: function formatter(val) {
+          return parseInt(val / 1000, 10) + 'k';
+        }
+      }
+    });
+    barView.interval().position('time*volumn').color('trend', function(val) {
+      if (val === '上涨') {
+        return '#f04864';
+      }
+
+      if (val === '下跌') {
+        return '#2fc25b';
+      }
+    }).tooltip('time*volumn', function(time, volumn) {
+      return {
+        name: time,
+        value: '<br/><span style="padding-left: 16px">成交量：' + volumn + '</span><br/>'
+      };
+    });
+
+    chart.render();
+
+    chart.interact('slider', {
+      container: 'slider', // DOM id
+      start: '2015-04-07', // 和状态量对应
+      end: '2015-07-28',
+      padding: [ 20, 120, 100 ],
+      minSpan: 30 * 24 * 60 * 60 * 1000,
+      maxSpan: 120 * 24 * 60 * 60 * 1000,
+      data: data, // 源数据
+      xAxis: 'time', // 背景图的横轴对应字段，同时为数据筛选的字段
+      yAxis: 'volumn', // 背景图的纵轴对应字段，同时为数据筛选的字段
+      scales: {
+        time: {
+          type: 'timeCat',
+          nice: false
+        }
+      },
+      onChange: function onChange(_ref) {
+        var startText = _ref.startText,
+          endText = _ref.endText;
+
+        ds.setState('start', startText);
+        ds.setState('end', endText);
+        setTimeout(function() {
+          chart.render();
+        }, 32);
+      }
+    });
+  });
+
+
+</script>
+{% endblock %}

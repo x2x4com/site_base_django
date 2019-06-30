@@ -94,7 +94,7 @@ INSTALLED_APPS = [
     'control.apps.ControlConfig',
     'demo.apps.DemoConfig',
     'dashboard.apps.DashboardConfig',
-
+    'vue.apps.VueConfig',
 ]
 
 MIDDLEWARE = [
@@ -215,14 +215,14 @@ STATICFILES_FINDERS = [
 ]
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'staticfiles'),
+    os.path.join(BASE_DIR, 'static'),
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
