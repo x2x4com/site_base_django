@@ -27,7 +27,7 @@ import django_filters
 class SomeControlFilter(rest_framework_filters.FilterSet):
 
     class Meta:
-        models = models.SomeControl
+        model = models.SomeControl
         fields = {
             'title': ['iexact'],
             'owner': ['iexact']
@@ -38,7 +38,7 @@ class SomeControlFilter(rest_framework_filters.FilterSet):
 class SomeControlFilter2(django_filters.FilterSet):
 
     class Meta:
-        models = models.SomeControl
+        model = models.SomeControl
         fields = {
             'title': ['iexact'],
             'owner': ['iexact']

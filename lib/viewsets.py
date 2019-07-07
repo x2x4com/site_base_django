@@ -34,6 +34,8 @@ from django.db import router
 from django.utils.encoding import force_text
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
+from django.conf.urls import url
+from django.contrib.auth.decorators import login_required
 
 
 class DFDeleteModelView(DeleteModelView):
@@ -262,6 +264,43 @@ class DFModelViewSet(ModelViewSet):
     # filterset_fields = ( )
     list_view_class = DFListModelView
     delete_view_class = DFDeleteModelView
+    login_require = True
+
+    @property
+    def urls(self):
+        """Collect url specs from the instance attributes.
+
+        Assumes that each attribute with name ending with `_view`
+        contains triple (regexp, view, url_name)
+        """
+        result = []
+
+        format_kwargs = {
+            'model_name': self.model._meta.model_name
+        }
+
+        url_entries = (
+            getattr(self, attr)
+            for attr in dir(self)
+            if attr.endswith('_view')
+            if isinstance(getattr(self, attr), (list, tuple))
+        )
+        for url_entry in url_entries:
+            regexp, view, name = url_entry
+            if hasattr(self, 'login_require') and self.login_require is True:
+                result.append(
+                    url(regexp.format(**format_kwargs),
+                        login_required(view),
+                        name=name.format(**format_kwargs))
+                )
+            else:
+                result.append(
+                    url(regexp.format(**format_kwargs),
+                        view,
+                        name=name.format(**format_kwargs))
+                )
+
+        return result
 
     def get_list_view_kwargs(self, **kwargs):
         """Configuration arguments for list view.
@@ -281,6 +320,11 @@ class DFModelViewSet(ModelViewSet):
             result.update({'filterset_fields': self.filterset_fields})
         else:
             result.update({'filterset_fields': ()})
+
+        if hasattr(self, 'filterset_class'):
+            result.update({'filterset_class': self.filterset_class})
+        else:
+            result.update({'filterset_class': ()})
 
         result.update(kwargs)
         return self.filter_kwargs(self.list_view_class, **result)
