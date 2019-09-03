@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+import gevent.monkey
+gevent.monkey.patch_all()
 import multiprocessing
  
 bind = '0.0.0.0:8002'
@@ -18,7 +20,8 @@ backlog = 2048
  
 # 工作模式为meinheld
 # pip install meinheld
-worker_class = "egg:meinheld#gunicorn_worker"
+# worker_class = "egg:meinheld#gunicorn_worker"
+worker_class = "gevent"
  
 # debug=True
  
