@@ -1,0 +1,112 @@
+version: "3.4"
+services:
+  redis:
+    image: redis:5.0
+    volumes:
+      - /data/redis/data:/data:z
+    ports:
+      - 6379:6379
+    command: redis-server --appendonly yes
+    networks:
+      - mynet
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 10
+        window: 120s
+
+  mysqld:
+    image: mysql:8.0
+    volumes:
+    - /data/mysql/data:/var/lib/mysql:z
+    - /data/mysql/cfg:/etc/mysql/conf.d:z
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+    - 3306:3306
+    - 33060:33060
+    networks:
+    - mynet
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 10
+        window: 120s
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+    - PMA_ARBITRARY=1
+    - PMA_HOST=mysqld
+    - PMA_PORT=3306
+    ports:
+    - 8001:80
+    volumes:
+    - /data/phpmyadmin/session:/sessions:z
+    networks:
+    - mynet
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 10
+        window: 120s
+
+
+  admin:
+    image: 192.168.1.120:5000/site_base_django:latest
+    ports:
+    - 8000:8000
+    command: ./start.sh
+    networks:
+    - mynet
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 10
+        window: 120s
+    depends_on:
+      - redis
+      - mysqld
+
+  nginx:
+    image: nginx:latest
+    ports:
+    - 80:80
+    - 8080:8080
+    volumes:
+    - /data/nginx/nginx-base.conf:/etc/nginx/nginx.conf:ro
+    - /data/nginx/vhosts-swarm:/etc/nginx/conf.d:ro
+    networks:
+    - mynet
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 100
+        window: 120s
+    depends_on:
+      - admin
+      - phpmyadmin
+
+
+networks:
+  mynet:

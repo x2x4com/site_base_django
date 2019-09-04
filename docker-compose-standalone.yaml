@@ -1,0 +1,63 @@
+version: "3"
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: proj1-db
+    restart: always
+    volumes:
+      - /data/mysql/data:/var/lib/mysql:z
+    environment:
+    - MYSQL_ROOT_PASSWORD=root
+    expose:
+      - 3306
+      - 33060
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: proj1-db
+    environment:
+    - PMA_ARBITRARY=1
+    - PMA_HOST=proj1-db
+    - PMA_PORT=3306
+    expose:
+      - 80
+    depends_on:
+      mysql
+
+  nginx:
+    image: nginx:latest
+    expose:
+    - 80
+    - 8080
+    volumes:
+    - /data/nginx/nginx-base.conf:/etc/nginx/nginx.conf:ro
+    - /data/nginx/vhosts-compose:/etc/nginx/conf.d:ro
+    depends_on:
+    - admin
+    - phpmyadmin
+
+  redis:
+    image: redis:5.0
+    container_name: proj1-redis
+    restart: always
+    volumes:
+    - /data/redis/data:/data:z
+    command: redis-server --appendonly yes
+    expose:
+      - 6379
+
+  app:
+    image: 192.168.1.120:5000/site_base_django:latest
+    container_name: proj1-app
+    restart: always
+    expose:
+      - 8002
+    links:
+      - mysql
+      - redis
+    command: ./start.sh
+    depends_on:
+      - mysql
+      - redis
+
