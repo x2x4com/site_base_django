@@ -9,6 +9,8 @@ RUN pip3 install pip --upgrade --no-cache-dir -i https://mirrors.aliyun.com/pypi
 
 WORKDIR /app
 
+EXPOSE 8002
+
 # ENTRYPOINT ["./start.sh"]
 CMD [""]
 
