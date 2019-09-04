@@ -31,8 +31,8 @@ services:
     - 80
     - 8080
     volumes:
-    - /data/nginx/nginx-base.conf:/etc/nginx/nginx.conf:ro
-    - /data/nginx/vhosts-compose:/etc/nginx/conf.d:ro
+    - ./docker/cfg/nginx/nginx-base.conf:/etc/nginx/nginx.conf:ro
+    - ./docker/cfg/nginx/vhosts-compose:/etc/nginx/conf.d:ro
     depends_on:
     - admin
     - phpmyadmin
