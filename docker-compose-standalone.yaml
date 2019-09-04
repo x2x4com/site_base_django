@@ -34,7 +34,7 @@ services:
     - ./docker/cfg/nginx/nginx-base.conf:/etc/nginx/nginx.conf:ro
     - ./docker/cfg/nginx/vhosts-compose:/etc/nginx/conf.d:ro
     depends_on:
-    - admin
+    - app
     - phpmyadmin
 
   redis:
