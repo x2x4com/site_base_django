@@ -116,3 +116,5 @@ services:
 
 networks:
   mynet:
+    external:
+      name: proj1
