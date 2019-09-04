@@ -23,7 +23,7 @@ services:
     expose:
       - 80
     depends_on:
-      mysql
+      - mysql
 
   nginx:
     image: nginx:latest
