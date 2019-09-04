@@ -27,6 +27,7 @@ services:
 
   nginx:
     image: nginx:latest
+    container_name: proj1-nginx
     expose:
     - 80
     - 8080
