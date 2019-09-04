@@ -47,7 +47,7 @@ services:
       - 6379
 
   app:
-    image: 192.168.1.120:5000/site_base_django:latest
+    image: 192.168.1.120:5000/site_base_django:v0.1
     container_name: proj1-app
     restart: always
     expose:

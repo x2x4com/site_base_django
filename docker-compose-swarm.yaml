@@ -68,7 +68,7 @@ services:
 
 
   admin:
-    image: 192.168.1.120:5000/site_base_django:latest
+    image: 192.168.1.120:5000/site_base_django:v0.2
     ports:
     - 8002:8002
     command: ./start.sh
