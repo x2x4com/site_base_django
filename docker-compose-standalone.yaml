@@ -15,7 +15,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: proj1-db
+    container_name: proj1-phpmyadmin
     environment:
     - PMA_ARBITRARY=1
     - PMA_HOST=proj1-db
