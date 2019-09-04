@@ -75,6 +75,7 @@ services:
     networks:
     - mynet
     deploy:
+      replicas: 3
       resources:
         limits:
           memory: 1G
