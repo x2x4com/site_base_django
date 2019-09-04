@@ -35,7 +35,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 4G
+          memory: 2G
       restart_policy:
         condition: on-failure
         delay: 5s
