@@ -12,12 +12,14 @@ services:
     deploy:
       resources:
         limits:
-          memory: 2G
+          memory: 1G
       restart_policy:
         condition: on-failure
         delay: 5s
         max_attempts: 10
         window: 120s
+      placement:
+        constraints: [node.hostname == docker2]
 
   mysqld:
     image: mysql:8.0
@@ -39,6 +41,8 @@ services:
         delay: 5s
         max_attempts: 10
         window: 120s
+      placement:
+        constraints: [node.hostname == docker]
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -102,6 +106,8 @@ services:
         delay: 10s
         max_attempts: 100
         window: 120s
+      placement:
+        constraints: [node.role == manager]
     depends_on:
       - admin
       - phpmyadmin
