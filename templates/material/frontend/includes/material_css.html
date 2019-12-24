@@ -1,7 +1,10 @@
 {% load static %}
-<link href="{% static 'css/antd.css' %}" rel="stylesheet">
 <link href="{% static 'material/fonts/material-design-icons/material-icons.css' %}"  rel="stylesheet">
 <link href="{% static 'material/fonts/roboto/style.css' %}" rel="stylesheet">
+{% if not debug %}
+<link href="{% static 'material/css/materialize.frontend.min.css' %}" rel="stylesheet">
+<link href="{% static 'material/css/materialize.frontend.print.min.css' %}" rel="stylesheet" media="print">
+{% else %}
 <link href="{% static 'material/css/materialize.css' %}" rel="stylesheet">
 <link href="{% static 'material/css/materialize.forms.css' %}" rel="stylesheet">
 <link href="{% static 'material/css/materialize.frontend.css' %}" rel="stylesheet">
@@ -10,6 +13,7 @@
 <link href="{% static 'material/css/responsive.dataTables.css' %}" rel="stylesheet">
 <link href="{% static 'material/css/fixedHeader.dataTables.css' %}" rel="stylesheet">
 <link href="{% static 'material/css/perfect-scrollbar.css' %}" rel="stylesheet">
+{% endif %}
 <link href="{% static 'css/dataTables.checkboxes.css' %}" rel="stylesheet">
-<!--link href="{% static 'css/element/index.css' %}" rel="stylesheet"-->
-
+<!--link href="{% static 'css/antd.css' %}" rel="stylesheet"-->
+<link href="{% static 'css/element/index.css' %}" rel="stylesheet">

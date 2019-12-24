@@ -31,7 +31,7 @@ from django.views import generic
 # from wagtail.documents.api.v2.endpoints import DocumentsAPIEndpoint
 
 
-from .views import index_view, change_lang
+from .views import index_view, change_lang, change_pwd
 # import wechat_django
 
 # wagtail与drf_yasg不兼容
@@ -46,6 +46,7 @@ urlpatterns = [
     path('app/', include(frontend_urls)),
     path('api/', include('api.urls')),
     # path('i18n/', include('django.conf.urls.i18n')),
+    path('accounts/change_pwd/', change_pwd, name='change_pwd'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('jet/', include('jet.urls', 'jet')),
     path('site/admin/', admin.site.urls),

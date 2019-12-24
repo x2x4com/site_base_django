@@ -11,11 +11,13 @@
     <div class="left-panel wide">
         <div class="card">
             <div class="card-content">
-                <form method="POST">
-                    {% csrf_token %}
-                    {% form form=form %}{% endform %}
-                    <button type="submit" name="_submit" class="btn">Submit</button>
-                </form>
+                <div id="vue-app">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form }}
+                        <button type="submit" name="_submit" class="btn">提交</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -41,5 +43,52 @@
 {% block main %}
 {{ block.super }}
 
-<script>$('.dropdown-button').dropdown()</script>
+<script>
+    // {{ dis_msg }}
+    // {{ msg }}
+    // {{ success }}
+    $('.dropdown-button').dropdown();
+    var app = new Vue({
+        el: '#vue-app',
+        data: {
+            {% if success %}
+            success: true,
+            {% else %}
+            success: false,
+            {% endif %}
+            {% if msg %}
+            message: '{{ msg }}',
+            {% else %}
+            message: '',
+            {% endif %}
+        },
+        mounted() {
+            {% if dis_msg %}
+            if (this.success) {
+                this.dis_success()
+            } else {
+                this.dis_warning()
+            }
+            {% endif %}
+        },
+        methods: {
+            dis_success() {
+                this.$notify({
+                    title: '成功',
+                    message: this.message,
+                    type: 'success',
+                    duration: 10000
+                })
+            },
+
+            dis_warning() {
+                this.$notify.error({
+                    title: '错误',
+                    message: this.message,
+                    duration: 10000
+                })
+            }
+        }
+    });
+</script>
 {% endblock %}
