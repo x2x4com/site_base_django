@@ -9,3 +9,8 @@ def index(request):
 
 def data(request):
     return HttpResponse(json.dumps(fake_data.stock_data), content_type="application/json")
+
+
+def form_create(request):
+    return render(request, 'form_create.html')
+

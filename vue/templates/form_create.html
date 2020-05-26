@@ -1,0 +1,236 @@
+{% extends 'material/frontend/base.html' %}
+
+{% load i18n material_form data_filter static %}
+
+{% block title %}{{ current_module.verbose_name }} - {{ block.super }}{% endblock %}
+{% block page_title %}<a href="{{ current_module.index_url }}">{{ current_module.verbose_name }}</a>{% endblock %}
+{% block breadcrumbs_items %}{% endblock %}
+
+
+{% block content %}
+
+<div class="left-panel wide">
+        <div class="card">
+            <div class="card-content">
+
+                <!-- START VUE APP-->
+                {% verbatim %}
+                <div id="vue-app">
+                    <el-row>
+                            <h5>JSON生成表单</h5>
+                    </el-row>
+
+                    <el-row >
+                        <form-create :rule="rule" v-model="fApi" :option="options" @input-field-change="change" @input-field2-blur="blur"/>
+                        </form-create>
+
+                    </el-row>
+
+                    </el-row>
+
+                </div>
+                {% endverbatim %}
+                <!-- END VUE APP-->
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block css %}
+{{ block.super }}
+<style>
+  .box-card {
+    padding: 18px 0;
+      border-radius: 4px;
+    height: 200px;
+  }
+  .el-row {
+    margin-bottom: 20px;
+  }
+  .el-col {
+    border-radius: 4px;
+  }
+  h5 {
+      color: #606266;
+  }
+</style>
+
+{% endblock %}
+
+
+{% block js %}
+        {{ block.super }}
+<!--script src="/static/js/g2.min.js"></script>
+<script src="/static/js/data-set.min.js"></script-->
+
+
+{% endblock %}
+
+
+
+{% block main %}
+{{ block.super }}
+
+<script>
+
+    $('.dropdown-button').dropdown();
+
+    var VueEditor = window.Vue2Editor.VueEditor;
+    Vue.use(VueEditor);
+    // console.log(options);
+    var api_url = '/view/monitor/api/issue1/data';
+    var app = new Vue({
+        el: '#vue-app',
+        components: {
+            formCreate: formCreate.$form(),
+        },
+        data: {
+            fApi:{},
+            options:{
+                onSubmit:(formData)=>{
+                    alert(JSON.stringify(formData));
+                }
+            },
+            rule:[
+                {
+                    type:'input',
+                    field:'inputField',
+                    title:'change 事件',
+                    emit:['change']
+                },
+                {
+                    type:'input',
+                    field:'inputField2',
+                    title:'blur 事件',
+                    emit:['blur']
+                },
+                {
+                    type: "InputNumber",
+                    field: "price",
+                    title: "价格",
+                    value: 1,
+                    props: {
+                        precision:2
+                    },
+                },
+                {
+                    type:"radio",
+                    title:"是否包邮",
+                    field:"is_postage",
+                    value:"0",
+                    options:[
+                        {value:"0",label:"不包邮",disabled:false},
+                        {value:"1",label:"包邮",disabled:true},
+                    ],
+                },
+                {
+                    type:"checkbox",
+                    title:"标签",
+                    field:"label",
+                    value:["1","2","3"],
+                    options:[
+                        {value:"1",label:"好用",disabled:true},
+                        {value:"2",label:"方便",disabled:false},
+                        {value:"3",label:"实用",disabled:false},
+                        {value:"4",label:"有效",disabled:false},
+                    ]
+                },
+                {
+                    type: "DatePicker",
+                    field: "section_day",
+                    title: "活动日期",
+                    value: ['2018-02-20', new Date()],
+                    props: {
+                        "type": "datetimerange",
+                        "format": "yyyy-MM-dd HH:mm:ss",
+                        "placeholder":"请选择活动日期",
+                    }
+                },
+                {
+                    type: "TimePicker",
+                    field: "section_time",
+                    title: "活动时间",
+                    value: [],
+                    props: {
+                        isRange:true
+                        },
+                },
+                {
+                    type: "select",
+                    field: "cate_id",
+                    title: "产品分类",
+                    value: ["104","105"],
+                    options: [
+                        {"value": "104", "label": "生态蔬菜", "disabled": false},
+                        {"value": "105", "label": "新鲜水果1", "disabled": false},
+                        {"value": "106", "label": "新鲜水果2", "disabled": false},
+                        {"value": "107", "label": "新鲜水果3", "disabled": false},
+                     ],
+                    props: {
+                        multiple: true,
+                        size: 'medium'
+                    },
+                },
+                {
+                    type:"switch",
+                    title:"是否上架",
+                    field:"is_show",
+                    value:"1",
+                    props: {
+                        activeValue:"1",
+                        inactiveValue:"0",
+                    },
+                },
+                {
+                    type:"rate",
+                    field:"rate",
+                    title:"推荐级别",
+                    value:3.5,
+                    props:{
+                        max: 10,
+                    },
+                    validate:[
+                        {required:true,type:'number',min:3, message: '请大于3颗星',trigger:'change'}
+                    ]
+                },
+                {
+                    type:"slider",
+                    field:"slider",
+                    title:"滑块",
+                    value:[0,52],
+                    props:{
+                        min: 0,
+                        max: 100,
+                        range: true,
+                    }
+                },
+                {
+                    type:'vue-editor',
+                    title:'商品详情',
+                    field:'editor',
+                    value:'<h1>form-create</h1>'
+                }
+            ]
+        },
+        filters: {
+        },
+        mounted() {
+        },
+        computed: {
+        },
+        methods: {
+            change(){
+                alert(`change!![${this.fApi.getValue('inputField')}]`);
+            },
+            blur(){
+                alert('blur!');
+            }
+        }
+    });
+
+
+</script>
+{% endblock %}
