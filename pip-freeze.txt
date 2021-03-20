@@ -46,7 +46,7 @@ idna==2.8
 incremental==17.5.0
 inflection==0.3.1
 itypes==1.1.0
-Jinja2==2.10.1
+Jinja2==2.11.3
 jsonfield==2.0.2
 jsonschema==3.0.1
 kombu==4.5.0
