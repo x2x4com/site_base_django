@@ -23,7 +23,7 @@ cryptography==3.3.2
 cycler==0.10.0
 daphne==2.3.0
 decorator==4.4.0
-Django==2.2.18
+Django==2.2.20
 django-appconf==1.0.3
 django-celery-beat==1.5.0
 django-celery-email==2.0.2
